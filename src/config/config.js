@@ -1,13 +1,23 @@
 import { HOST, PORT } from '../constants/env.js';
-import { PACKET_TOTAL_LENGTH, PACKET_TYPE_LENGTH } from '../constants/header.js';
+import {
+  PACKET_PAYLOAD_LENGTH,
+  PACKET_SEQUENCE,
+  PACKET_TYPE_LENGTH,
+  PACKET_VERSION_LENGTH,
+} from '../constants/header.js';
 
 export const config = {
   server: {
-    HOST: HOST,
-    PORT: PORT,
+    host: HOST,
+    port: PORT,
+  },
+  client: {
+    version: '1.0.0',
   },
   packet: {
-    totalLength: PACKET_TOTAL_LENGTH,
-    TypeLength: PACKET_TYPE_LENGTH,
+    typeLength: PACKET_TYPE_LENGTH,
+    versionLength: PACKET_VERSION_LENGTH,
+    sequence: PACKET_SEQUENCE,
+    payloadLength: PACKET_PAYLOAD_LENGTH,
   },
 };
