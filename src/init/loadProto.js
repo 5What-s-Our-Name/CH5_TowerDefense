@@ -29,18 +29,21 @@ const getAllProto = (dir, fileList = []) => {
 // .proto 파일 목록 가져오기
 const protoFiles = getAllProto(protoDir);
 
-// .proto 메시지 객체를 저장할 객체
-const protoMessages = {};
+let root;
+
+export let GamePacket;
+export let GlobalFailCode;
 
 // 모든 .proto 파일을 비동기적으로 로드하여 메시지를 protoMessages 객체에 저장
 export const loadProtos = async () => {
   try {
-    const root = new protobuf.Root(); // 프로토콜 버퍼의 루트 객체 생성
+    root = new protobuf.Root(); // 프로토콜 버퍼의 루트 객체 생성
 
     // 모든 .proto 파일을 로드하여 병합
     await Promise.all(protoFiles.map((file) => root.load(file)));
 
-    getTypes(root);
+    GamePacket = root.lookupType('GamePacket');
+    GlobalFailCode = root.lookupEnum('GlobalFailCode');
 
     const date = new Date();
     console.log(`[${formatDate(date)} - LOAD] Success to load protobuf files`);
@@ -48,30 +51,4 @@ export const loadProtos = async () => {
     const date = new Date();
     console.error(`[${formatDate(date)} - FAIL] Fail to load protobuf files`);
   }
-};
-
-function getTypes(root, prefix = '') {
-  Object.keys(root.nested).forEach((key) => {
-    const nestedObject = root.nested[key];
-    const fullName = prefix ? `${prefix}.${key}` : key;
-
-    if (nestedObject.nested) {
-      // 패키지인 경우 재귀적으로 탐색
-      getTypes(nestedObject, fullName);
-    } else if (nestedObject instanceof protobuf.Type) {
-      // 메시지 타입일 경우만 저장
-      const [packageName, type] = fullName.split('.');
-
-      // 패키지 이름이 이미 존재하지 않으면 객체 초기화
-      if (!protoMessages[packageName]) protoMessages[packageName] = {};
-
-      // 메시지 타입을 protoMessages 객체에 저장
-      protoMessages[packageName][type] = root.lookupType(fullName);
-    }
-  });
-}
-
-// protoMessages 객체 얕은복사 후 반환
-export const getProtoMessages = () => {
-  return { ...protoMessages };
 };

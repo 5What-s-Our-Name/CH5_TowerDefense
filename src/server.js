@@ -6,7 +6,7 @@ import { config } from './config/config.js';
 const server = net.createServer(onConnection);
 
 initServer().then(() => {
-  server.listen(config.server.PORT, config.server.HOST, () => {
-    console.log(`SERVER ON - ${config.server.HOST} : ${config.server.PORT}`);
+  server.listen(config.server.port, config.server.host, () => {
+    console.log(`SERVER ON - ${config.server.host} : ${config.server.port}`);
   });
 });
