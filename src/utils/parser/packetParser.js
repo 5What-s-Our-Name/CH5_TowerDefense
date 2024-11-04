@@ -1,46 +1,46 @@
 import { config } from '../../config/config.js';
-import { getProtoMessages } from '../../init/loadProto.js';
-import { getProtoTypeNameByHandlerId } from '../../handlers/index.js';
-import CustomErr from '../error/customErr';
-import { errCodes } from '../error/errCodes.js';
 
-export const packetParser = (data) => {
-  const protoMessages = getProtoMessages();
-  // 공통 패킷
-  const Packet = protoMessages.common.CommonPacket;
-  let packet;
-  try {
-    packet = Packet.decode(data);
-  } catch (err) {
-    throw new CustomErr(errCodes.PACKET_DECODE_ERR, 'Failed to decode packet');
-  }
+export const parsePacket = (socket) => {
+  let offset = 0;
 
-  const { handlerId, userId, version } = packet;
+  // packetType
+  if (socket.buffer.length < offset + config.packet.typeLength) return null;
+  const packetType = socket.buffer.readUInt16BE(offset);
+  offset += config.packet.typeLength;
 
-  if (version !== config.client.version) {
-    throw new CustomErr(errCodes.CLIENT_VERSION_MISMATCH, 'Client version mismatch');
-  }
+  // versionLength
+  if (socket.buffer.length < offset + config.packet.versionLength) return null;
+  const versionLength = socket.buffer.readUInt8(offset);
+  offset += config.packet.versionLength;
 
-  const protoTypeName = getProtoTypeNameByHandlerId(handlerId);
-  if (!protoTypeName) {
-    throw new CustomErr(errCodes.UNKNOWN_HANDLER_ID, 'Unknown handler ID');
-  }
+  // version
+  if (socket.buffer.length < offset + versionLength) return null;
+  const version = socket.buffer.slice(offset, offset + versionLength).toString();
+  offset += versionLength;
 
-  const [namespace, typeName] = protoTypeName.split('.');
-  const payloadType = protoMessages[namespace][typeName];
-  let payload;
-  try {
-    payload = payloadType.decode(packet.payload);
-  } catch (err) {
-    throw new CustomErr(errCodes.PACKET_DECODE_ERR, 'Failed to decode packet');
-  }
-  const expectedFields = Object.keys(payloadType.fields);
-  const actualFields = Object.keys(payload);
-  const missingFields = expectedFields.filter((field) => !actualFields.includes(field));
+  // sequence
+  if (socket.buffer.length < offset + config.packet.sequence) return null;
+  const sequence = socket.buffer.readUInt32BE(offset);
+  offset += config.packet.sequence;
 
-  if (missingFields.length > 0) {
-    throw new CustomErr(errCodes.MISSING_FIELDS, 'Field is missing');
-  }
+  // payloadLength
+  if (socket.buffer.length < offset + config.packet.payloadLength) return null;
+  const payloadLength = socket.buffer.readUInt32BE(offset);
+  offset += config.packet.payloadLength;
 
-  return { handlerId, userId, payload };
+  // payload
+  if (socket.buffer.length < offset + payloadLength) return null;
+  const payload = socket.buffer.slice(offset, offset + payloadLength);
+  offset += payloadLength;
+
+  // 남은 버퍼를 업데이트
+  socket.buffer = socket.buffer.slice(offset);
+
+  // 실질적 사용할 것만 리턴
+  return {
+    packetType,
+    version,
+    sequence,
+    payload,
+  };
 };
