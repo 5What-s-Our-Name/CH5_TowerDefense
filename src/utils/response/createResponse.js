@@ -5,7 +5,7 @@ import { getProtoMessages } from '../../init/loadProto.js';
 import { s2cConvert } from '../formatter/s2cConvert.js';
 import { snakeToCamel } from './../formatter/snakeToCamel.js';
 
-export const createResponse = (Type, data = null, failCode = 0) => {
+export const createResponse = (Type, seq, data = null, failCode = 0) => {
   const protoMessages = getProtoMessages();
   const typeName = PACKET_TYPE_REVERSED[Type];
   const camel = snakeToCamel(typeName);
@@ -26,7 +26,7 @@ export const createResponse = (Type, data = null, failCode = 0) => {
   Buffer.from(config.client.version).copy(version);
 
   const sequence = Buffer.alloc(config.packet.sequence);
-  sequence.writeUInt32BE(Type, 0);
+  sequence.writeUInt32BE(seq++, 0);
 
   const payloadLength = Buffer.alloc(config.packet.payloadLength);
   payloadLength.writeUInt32BE(payload.length, 0);
