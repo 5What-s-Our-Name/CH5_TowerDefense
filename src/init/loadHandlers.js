@@ -44,7 +44,6 @@ export const loadHandlers = async () => {
         } else {
           handlers[fileName] = module;
         }
-        console.log(handlers);
       }),
     );
 

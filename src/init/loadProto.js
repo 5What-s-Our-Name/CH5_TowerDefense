@@ -30,6 +30,7 @@ const getAllProto = (dir, fileList = []) => {
 const protoFiles = getAllProto(protoDir);
 
 let root;
+const protoMessages = {};
 
 export let GamePacket;
 export let GlobalFailCode;
@@ -41,7 +42,7 @@ export const loadProtos = async () => {
 
     // 모든 .proto 파일을 로드하여 병합
     await Promise.all(protoFiles.map((file) => root.load(file)));
-
+    getTypes(root);
     GamePacket = root.lookupType('GamePacket');
     GlobalFailCode = root.lookupEnum('GlobalFailCode');
 
@@ -51,4 +52,29 @@ export const loadProtos = async () => {
     const date = new Date();
     console.error(`[${formatDate(date)} - FAIL] Fail to load protobuf files`);
   }
+};
+
+function getTypes(root, prefix = '') {
+  Object.keys(root.nested).forEach((key) => {
+    const nestedObject = root.nested[key];
+    const fullName = prefix ? `${prefix}.${key}` : key;
+
+    if (nestedObject.nested) {
+      // 패키지인 경우 재귀적으로 탐색
+      getTypes(nestedObject, fullName);
+    } else if (nestedObject instanceof protobuf.Type) {
+      // 메시지 타입일 경우만 저장
+      const [packageName, type] = fullName.split('.');
+
+      // 패키지 이름이 이미 존재하지 않으면 객체 초기화
+      if (!protoMessages[packageName]) protoMessages[packageName] = {};
+
+      // 메시지 타입을 protoMessages 객체에 저장
+      protoMessages[packageName][type] = root.lookupType(fullName);
+    }
+  });
+}
+
+export const getProtoMessages = () => {
+  return { ...protoMessages };
 };

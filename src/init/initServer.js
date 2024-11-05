@@ -1,7 +1,7 @@
 import { testAllConnections } from '../mysql/testDataBase.js';
 import { formatDate } from '../utils/formatter/dateFormatter.js';
 import { getHandlers, loadHandlers } from './loadHandlers.js';
-import { loadProtos } from './loadProto.js';
+import { GamePacket, getProtoMessages, loadProtos } from './loadProto.js';
 import pools from './../mysql/createPool.js';
 
 export const initServer = async () => {
@@ -10,8 +10,6 @@ export const initServer = async () => {
     await testAllConnections(pools);
     await loadProtos();
     await loadHandlers();
-    const test = getHandlers();
-    console.log(test);
   } catch (err) {
     const date = new Date();
     console.error(`[${formatDate(date)} - FAIL] Failed to initialize server`, err);
