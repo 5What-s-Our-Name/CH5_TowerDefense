@@ -1,19 +1,17 @@
 import { config } from '../../config/config.js';
 import { PACKET_TYPE_REVERSED } from '../../constants/header.js';
-import { getHandlers } from '../../init/loadHandlers.js';
-import { getProtoMessages } from '../../init/loadProto.js';
-import { s2cConvert } from '../formatter/s2cConvert.js';
+import { GamePacket } from '../../init/loadProto.js';
 import { snakeToCamel } from './../formatter/snakeToCamel.js';
 
 export const createResponse = (Type, seq, data = null, failCode = 0) => {
-  const protoMessages = getProtoMessages();
   const typeName = PACKET_TYPE_REVERSED[Type];
   const camel = snakeToCamel(typeName);
-  const convertedName = s2cConvert(camel);
-  // loadProto pkg 가 없는 경우 undefined
-  const Response = protoMessages[convertedName].undefined;
-  const createdPayload = Response.create(data);
-  const payload = Response.encode(createdPayload).finish();
+
+  const response = {
+    [camel]: data,
+  };
+
+  const payload = GamePacket.encode(response).finish();
 
   const packetType = Buffer.alloc(config.packet.typeLength);
   packetType.writeUInt16BE(Type, 0);
