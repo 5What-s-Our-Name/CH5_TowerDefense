@@ -1,26 +1,35 @@
 import { config } from '../../config/config.js';
-import { PACKET_TYPE } from '../../constants/header.js';
+import { PACKET_TYPE_REVERSED } from '../../constants/header.js';
+import { getHandlers } from '../../init/loadHandlers.js';
 import { getProtoMessages } from '../../init/loadProto.js';
+import { s2cConvert } from '../formatter/s2cConvert.js';
+import { snakeToCamel } from './../formatter/snakeToCamel.js';
 
-export const createResponse = (handlerId, responseCode, data = null, userId) => {
+export const createResponse = (Type, data = null, failCode = 0) => {
   const protoMessages = getProtoMessages();
-  const Response = protoMessages.response.Response;
+  const typeName = PACKET_TYPE_REVERSED[Type];
+  const camel = snakeToCamel(typeName);
+  const convertedName = s2cConvert(camel);
+  // loadProto pkg 가 없는 경우 undefined
+  const Response = protoMessages[convertedName].undefined;
+  const createdPayload = Response.create(data);
+  const payload = Response.encode(createdPayload).finish();
 
-  const responsePayload = {
-    handlerId,
-    responseCode,
-    timestamp: Date.now(),
-    data: data ? Buffer.from(JSON.stringify(data)) : null,
-  };
+  const packetType = Buffer.alloc(config.packet.typeLength);
+  packetType.writeUInt16BE(Type, 0);
 
-  const buffer = Response.encode(responsePayload).finish();
-  const packetTotalLength = Buffer.alloc(config.packet.totalLength);
-  packetTotalLength.writeUInt32BE(
-    config.packet.totalLength + config.packet.TypeLength + buffer.length,
-    0,
-  );
-  const typeLength = Buffer.alloc(config.packet.TypeLength);
-  typeLength.writeUInt8(PACKET_TYPE.NORMAL, 0);
+  const versionLength = Buffer.alloc(config.packet.versionLength);
+  const vLen = config.client.version.length;
+  versionLength.writeUInt8(vLen, 0);
 
-  return Buffer.concat([packetTotalLength, typeLength, buffer]);
+  const version = Buffer.alloc(vLen);
+  Buffer.from(config.client.version).copy(version);
+
+  const sequence = Buffer.alloc(config.packet.sequence);
+  sequence.writeUInt32BE(Type, 0);
+
+  const payloadLength = Buffer.alloc(config.packet.payloadLength);
+  payloadLength.writeUInt32BE(payload.length, 0);
+
+  return Buffer.concat([packetType, versionLength, version, sequence, payloadLength, payload]);
 };
