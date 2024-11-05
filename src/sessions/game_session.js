@@ -1,5 +1,6 @@
 import Game from '../classes/models/game_class.js';
 import { MAX_PLAYERS } from '../constants/sessions.js';
+import { createGameSession } from '../utils/function/game/create_game_session.js';
 import { gameSessions } from './session.js';
 
 // 방 생성 및 게임 세션에 추가
@@ -21,9 +22,9 @@ export const removeGameSession = (gameId) => {
 
 // 방 조회
 export const getGameSession = (gameId) => {
-  const sessions = getGameSessions
+  const sessions = gameSessions
     .map((session) => {
-      const userCnt = session.getUser().length;
+      const userCnt = session.getUserCount();
       return userCnt < MAX_PLAYERS ? [session, userCnt] : null;
     })
     .filter(Boolean);
@@ -46,6 +47,6 @@ export const getMyGameSession = (userId) => {
   }
 };
 
-export const getAllGameSession = () => {
+export const getAllGameSessions = () => {
   return gameSessions.map((session) => ({ ...session }));
 };

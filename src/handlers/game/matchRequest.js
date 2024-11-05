@@ -1,4 +1,10 @@
+import { getUserBySocket } from '../../sessions/user_session.js';
 const matchRequest = (socket) => {
+  const user = getUserBySocket(socket);
+
+  if (!user) {
+    throw new CustomErr(errCodes.USER_NOT_FOUND, '유저를 찾을 수 없습니다.');
+  }
   // 여기에서
   // socket으로 유저 구하고, 유저 세션 구하고
   // 성철님 코드에 게임 세션 참여 유무 판별이 존재한다.
