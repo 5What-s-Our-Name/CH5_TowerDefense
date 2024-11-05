@@ -1,10 +1,13 @@
+import { testAllConnections } from '../mysql/testDataBase.js';
 import { formatDate } from '../utils/formatter/dateFormatter.js';
 import { getHandlers, loadHandlers } from './loadHandlers.js';
 import { loadProtos } from './loadProto.js';
+import pools from './../mysql/createPool.js';
 
 export const initServer = async () => {
   try {
     // 초기 설정
+    await testAllConnections(pools);
     await loadProtos();
     await loadHandlers();
     const test = getHandlers();
