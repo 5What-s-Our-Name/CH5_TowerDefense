@@ -1,8 +1,8 @@
-import { getGameSession } from '../../sessions/game_session.js';
+import { getGameSession } from '../../../sessions/game_session.js';
 //import { getUserByUserId } from '../../sessions/user_session.js';
-import CustomErr from '../../utils/error/customErr.js';
-import { errCodes } from '../../utils/error/errCodes.js';
-import { handleErr } from '../../utils/error/handlerErr.js';
+import CustomErr from '../../error/customErr.js';
+import { errCodes } from '../../error/errCodes.js';
+import { handleErr } from '../../error/handlerErr.js';
 
 const joinGameHandler = ({ socket, userId, payload }) => {
   try {
