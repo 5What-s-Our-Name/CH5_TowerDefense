@@ -5,7 +5,10 @@ import {
   DB1_PORT,
   DB1_USER,
   HOST,
+  PEPPER,
   PORT,
+  SALT,
+  SECRET_KEY,
 } from '../constants/env.js';
 import {
   PACKET_PAYLOAD_LENGTH,
@@ -36,5 +39,10 @@ export const config = {
       host: DB1_HOST,
       port: DB1_PORT,
     },
+  },
+  auth: {
+    pepper: PEPPER,
+    salt: SALT,
+    secret_key: SECRET_KEY,
   },
 };
