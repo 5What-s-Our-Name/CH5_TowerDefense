@@ -4,6 +4,7 @@ import { errCodes } from '../../utils/error/errCodes.js';
 import { gameStartNotification } from '../../utils/notification/game.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
+import { initialGameState } from '../../constants/initGame.js';
 class Game {
   constructor(gameId) {
     this.gameId = gameId;
@@ -32,33 +33,15 @@ class Game {
     this.users.push(user);
     // 방에 유저가 2명 미만일 경우 방에 유저 추가
 
-    this.waitingGame();
+    if (this.users.length === MAX_PLAYERS) {
+      this.startGame();
+    }
     /*
      방에 유저가 1명 있을 경우 대기 및 2명이 오면 게임 시작을 위해 작성
      addUser waitingGame()의 로직을 넣어도 되지만 더 깨끗한 로직 관리를 위해 분리
     */
   }
 
-  waitingGame() {
-    // 대기 상태이면 true, 게임 진행이면 false로
-    // 1명이 게임 방에 존재할 경우, 다른 유저가 올 때 까지
-    // 1명의 유저를 대기시켜야 한다고 생각해서 아래와 같이 구현했습니다.
-    while (this.state) {
-      // 유저가 2명가 충족하는 인원(MAX_PLAYERS)이면
-      // 3초 후 게임 시작 로직을 동작 시킵니다.
-      if (this.users.length === MAX_PLAYERS) {
-        setTimeout(() => {
-          this.startGame();
-        }, 3000);
-        break;
-        // 혹시 반복문에 의해 다시 게임이 실행될까봐 break 처리 했습니다.
-      }
-    }
-    // 현재 while(this.state)로
-    // 유저가 2명이 아닐 경우 무한 반복 중
-    // => CPU 낭비
-    // => 원래는 Lock으로 CPU 낭비를 없애야 하는 상황
-  }
   isGameStart() {
     return this.state;
   }
@@ -76,10 +59,63 @@ class Game {
     this.state = false;
     // 상태가 게임 진행 상태로 변경해주고,
 
-    const startPacket = createResponse(PACKET_TYPE.MATCH_START_NOTIFICATION, this.users);
     // gameStartNotification으로 해당 방의 id(uuidv4로 생성 돼 중복이 없습니다.)와
     // 게임이 시작될 시간을 현재 제공 중 입니다.
+
     this.users.forEach((user) => {
+      /*
+    S2CMatchStartNotification {
+      InitialGameState initialGameState;
+      GameState playerData;
+      GameState opponentData;
+    }
+
+    InitialGameState {
+      int32 baseHp,
+      int32 towerCost,
+      int32 initialGold,
+      int32 monsterSpawnInterval,
+    }
+    GameState
+    {
+      int32 gold,
+      BaseData base,
+      int32 highScore,
+      repeated TowerData towers,
+      repeated MonsterData monsters,
+      int32 monsterLevel,
+      int32 score,
+      repeated Position monsterPath,
+      Position basePosition,
+    }
+
+    BaseData
+    {
+    }
+
+    TowerData
+    {
+    }
+
+    MonsterData
+    {
+    }
+
+    monsterPath
+    {
+    }
+
+    Position
+    {
+    }
+
+    */
+
+      const startPacket = createResponse(
+        PACKET_TYPE.MATCH_START_NOTIFICATION,
+        user.getNextSequence(),
+        {},
+      );
       user.getSocket().write(startPacket);
     });
   }
