@@ -2,6 +2,7 @@ import { config } from '../../config/config.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { GlobalFailCode } from '../../init/loadProto.js';
 import pools from '../../mysql/createPool.js';
+import { addUser } from '../../sessions/user_session.js';
 import CustomErr from '../../utils/error/customErr.js';
 import { handleErr } from '../../utils/error/handlerErr.js';
 import { createJWT } from '../../utils/jwt/createToken.js';
@@ -40,6 +41,9 @@ const loginRequest = async (socket, sequence, payload) => {
     });
 
     // INCOMPLETE: 여기에 유저 등록 부분 들어가야함.
+    console.log('가지고 있는 값 확인 : ', token);
+
+    addUser(token);
 
     // 발송
     socket.write(response);

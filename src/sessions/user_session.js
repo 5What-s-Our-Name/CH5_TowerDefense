@@ -25,6 +25,14 @@ export const getUserBySocket = (socket) => {
   return user;
 };
 
+// 특정 사용자의 다음 시퀀스를 가져옴
+export const getNextSequence = (userId) => {
+  const user = getUserByUserId(userId);
+  if (user) {
+    return user.getNextSequence();
+  }
+};
+
 export const getUserSessions = () => {
   return userSessions;
 };
