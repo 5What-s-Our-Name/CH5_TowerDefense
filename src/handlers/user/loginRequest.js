@@ -40,15 +40,12 @@ const loginRequest = async (socket, sequence, payload) => {
       token,
     });
 
-    // INCOMPLETE: 여기에 유저 등록 부분 들어가야함.
-    console.log('가지고 있는 값 확인 : ', token);
-
-    addUser(token);
+    // User 세션에 해당 유저 socket과 token 저장
+    // 제가 이 부분만 추가했어요^^
+    addUser(socket, token);
 
     // 발송
     socket.write(response);
-
-    // 토큰 발급
   } catch (err) {
     handleErr(socket, PACKET_TYPE.LOGIN_RESPONSE, err);
     console.error('Error during login:', err.message);

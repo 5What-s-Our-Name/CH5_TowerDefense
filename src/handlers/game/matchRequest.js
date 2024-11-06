@@ -2,7 +2,6 @@ import { getGameSession, getMyGameSession } from '../../sessions/game_session.js
 import { getUserBySocket } from '../../sessions/user_session.js';
 const matchRequest = (socket) => {
   const user = getUserBySocket(socket);
-
   if (!user) {
     throw Error('유저를 찾을 수 없습니다.');
   }
@@ -26,6 +25,8 @@ const matchRequest = (socket) => {
    반대로, 만석이 아닌 Game Class instance가 있다면 해당 Game Class instance를 반환해준다.
   */
   gameSession = getGameSession();
+
+  console.log('생성되거나 참여한 방 정보 확인 : ', gameSession);
 
   /*
    그래서 Game Class instance는 addUser(user)로

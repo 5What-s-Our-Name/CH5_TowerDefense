@@ -45,3 +45,5 @@ class User {
     // 클라이언트에게 알리고, 다음 요청을 보내는 것 입니다.
   }
 }
+
+export default User;

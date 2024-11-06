@@ -32,7 +32,7 @@ class Game {
     this.users.push(user);
     // 방에 유저가 2명 미만일 경우 방에 유저 추가
 
-    waitingGame();
+    this.waitingGame();
     /*
      방에 유저가 1명 있을 경우 대기 및 2명이 오면 게임 시작을 위해 작성
      addUser waitingGame()의 로직을 넣어도 되지만 더 깨끗한 로직 관리를 위해 분리

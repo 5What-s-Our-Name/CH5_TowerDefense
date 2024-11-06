@@ -1,8 +1,13 @@
 import { userSessions } from './session.js';
+import User from '../classes/models/user_class.js';
 
 // 유저 객체를 유저 세션에 추가
-export const addUser = (user) => {
+export const addUser = (socket, token) => {
+  const user = new User(socket, token);
+  //token은 User Class에 의해 userId가 될 겁니다.
+  //그래서 토큰을 비교해야한다면 userId로 비교하세요
   userSessions.push(user);
+  console.log('유저가 잘 생성 됐는지 확인 : ', user);
   return user;
 };
 
