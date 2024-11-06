@@ -1,10 +1,8 @@
-import CustomErr from '../../utils/error/customErr.js';
 import { MAX_PLAYERS } from '../../constants/sessions.js';
-import { errCodes } from '../../utils/error/errCodes.js';
-import { gameStartNotification } from '../../utils/notification/game.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
-import { initialGameState } from '../../constants/initGame.js';
+import { initialGameState, opponentData, playerData } from '../../assets/init.js';
+
 class Game {
   constructor(gameId) {
     this.gameId = gameId;
@@ -59,62 +57,16 @@ class Game {
     this.state = false;
     // 상태가 게임 진행 상태로 변경해주고,
 
-    // gameStartNotification으로 해당 방의 id(uuidv4로 생성 돼 중복이 없습니다.)와
+    // gameStartNotification으로 해당 방의 id(uuidV4로 생성 돼 중복이 없습니다.)와
     // 게임이 시작될 시간을 현재 제공 중 입니다.
 
     this.users.forEach((user) => {
-      /*
-    S2CMatchStartNotification {
-      InitialGameState initialGameState;
-      GameState playerData;
-      GameState opponentData;
-    }
-
-    InitialGameState {
-      int32 baseHp,
-      int32 towerCost,
-      int32 initialGold,
-      int32 monsterSpawnInterval,
-    }
-    GameState
-    {
-      int32 gold,
-      BaseData base,
-      int32 highScore,
-      repeated TowerData towers,
-      repeated MonsterData monsters,
-      int32 monsterLevel,
-      int32 score,
-      repeated Position monsterPath,
-      Position basePosition,
-    }
-
-    BaseData
-    {
-    }
-
-    TowerData
-    {
-    }
-
-    MonsterData
-    {
-    }
-
-    monsterPath
-    {
-    }
-
-    Position
-    {
-    }
-
-    */
+      console.log(`${this.gameId} Game Start`);
 
       const startPacket = createResponse(
         PACKET_TYPE.MATCH_START_NOTIFICATION,
         user.getNextSequence(),
-        {},
+        { initialGameState, playerData, opponentData },
       );
       user.getSocket().write(startPacket);
     });
