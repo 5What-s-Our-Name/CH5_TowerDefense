@@ -2,6 +2,7 @@ import { config } from '../../config/config.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { GlobalFailCode } from '../../init/loadProto.js';
 import pools from '../../mysql/createPool.js';
+import { addUser } from '../../sessions/user_session.js';
 import CustomErr from '../../utils/error/customErr.js';
 import { handleErr } from '../../utils/error/handlerErr.js';
 import { createJWT } from '../../utils/jwt/createToken.js';
@@ -39,12 +40,12 @@ const loginRequest = async (socket, sequence, payload) => {
       token,
     });
 
-    // INCOMPLETE: 여기에 유저 등록 부분 들어가야함.
+    // User 세션에 해당 유저 socket과 token 저장
+    // 제가 이 부분만 추가했어요^^
+    addUser(socket, token);
 
     // 발송
     socket.write(response);
-
-    // 토큰 발급
   } catch (err) {
     handleErr(socket, PACKET_TYPE.LOGIN_RESPONSE, err);
     console.error('Error during login:', err.message);

@@ -21,7 +21,7 @@ export const removeGameSession = (gameId) => {
 };
 
 // 방 조회
-export const getGameSession = (gameId) => {
+export const getGameSession = () => {
   const sessions = gameSessions
     .map((session) => {
       const userCnt = session.getUserCount();
