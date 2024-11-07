@@ -59,23 +59,21 @@ class Game {
   }
 
   makeMonster(monster, socket) {
+    console.log('monster : ', monster, ', socket : ', socket);
     const user = getUserBySocket(socket);
-
     const response = createResponse(PACKET_TYPE.SPAWN_MONSTER_RESPONSE, user.getNextSequence(), {
-      monster,
+      ...monster,
     });
-
     user.socket.write(response);
-
     const opponent = this.getOpponentUser(user.userId);
-
-    opponent.socket.write(
+    const opponentResponse = createResponse(
       PACKET_TYPE.SPAWN_ENEMY_MONSTER_NOTIFICATION,
       opponent.getNextSequence(),
       {
-        monster,
+        ...monster,
       },
     );
+    opponent.socket.write(opponentResponse);
   }
 
   startGame() {
