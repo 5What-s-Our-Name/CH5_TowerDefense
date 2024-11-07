@@ -55,7 +55,7 @@ class Game {
   }
 
   removeUser(userId) {
-    this.users = this._users.filter((user) => user.userId !== userId);
+    this.users = this.users.filter((user) => user.userId !== userId);
   }
 
   makeMonster(monster, socket) {
