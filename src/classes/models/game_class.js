@@ -23,6 +23,9 @@ class Game {
       new Error('방에 유저가 꽉 찬 상태 입니다.');
     }
     this.users.push(user);
+    if (this.users.length === MAX_PLAYERS) {
+      this.startGame();
+    }
   }
   getUsers(socket) {
     const user = this.getUser(socket);
