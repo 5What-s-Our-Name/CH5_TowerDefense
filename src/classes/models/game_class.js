@@ -31,7 +31,6 @@ class Game {
     }
     if (user) {
       this.users.push(user);
-      console.log('this.users 배열: ', this.users);
     } else {
       console.error(`The user is not pushed`);
     }
