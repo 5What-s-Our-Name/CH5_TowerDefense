@@ -2,7 +2,7 @@ import { MAX_PLAYERS } from '../../constants/sessions.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { initialGameState, opponentData, playerData } from '../../assets/init.js';
-import { getUserBySocket } from '../../sessions/user_session.js';
+import { getOpponentUserBySocket, getUserBySocket } from '../../sessions/user_session.js';
 
 class Game {
   constructor(gameId) {
@@ -29,7 +29,12 @@ class Game {
       //throw new CustomErr(errCodes.GAME_FULL_USER, '방에 유저가 꽉 찬 상태 입니다.');
       new Error('방에 유저가 꽉 찬 상태 입니다.');
     }
-    this.users.push(user);
+    if (user) {
+      this.users.push(user);
+      console.log('this.users 배열: ', this.users);
+    } else {
+      console.error(`The user is not pushed`);
+    }
     // 방에 유저가 2명 미만일 경우 방에 유저 추가
 
     if (this.users.length === MAX_PLAYERS) {
@@ -59,7 +64,7 @@ class Game {
   }
 
   makeMonster(monster, socket) {
-    console.log('monster : ', monster, ', socket : ', socket);
+    // console.log('monster : ', monster, ', socket : ', socket);
     const user = getUserBySocket(socket);
     const response = createResponse(PACKET_TYPE.SPAWN_MONSTER_RESPONSE, user.getNextSequence(), {
       ...monster,
@@ -95,14 +100,14 @@ class Game {
     });
   }
 
-  setBaseHit(userId, damage) {
-    const user = this.users.find((user) => user.userId === userId);
-    const otherUser = this.users.find((user) => user.userId !== userId);
-    user.setBaseHit(damage);
+  setBaseHit(socket, damage) {
+    console.log(`damage: ${damage}`);
+    const user = getUserBySocket(socket);
+    const otherUser = getOpponentUserBySocket(socket);
 
-    const currentHp = user.getBaseHP();
-
-    if (user.userId === userId) {
+    const currentHp = user.getBaseHp();
+    if (user) {
+      user.setBaseHit(damage);
       const currentHpResponse = createResponse(
         PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
         user.getNextSequence(),
@@ -111,6 +116,8 @@ class Game {
           baseHp: currentHp,
         },
       );
+      console.log('userCurrentHpResponse: ', currentHpResponse);
+      user.socket.write(currentHpResponse);
       const otherUserCurrentHpResponse = createResponse(
         PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
         otherUser.getNextSequence(),
@@ -119,11 +126,16 @@ class Game {
           baseHp: currentHp,
         },
       );
+      console.log('otherUserCurrentHpResponse :', otherUserCurrentHpResponse);
+      otherUser.socket.write(otherUserCurrentHpResponse);
+    } else {
+      console.error(`User with socket ${socket} not found`);
     }
+    console.log(`currentHp: ${currentHp}`);
   }
 
-  gameEndNotification(userId) {
-    const loseUser = this.users.find((user) => user.userId === userId);
+  gameEndNotification(socket) {
+    const loseUser = getUserBySocket(socket);
 
     const loseResponse = createResponse(
       PACKET_TYPE.GAME_OVER_NOTIFICATION,
@@ -132,7 +144,7 @@ class Game {
     );
     loseUser.getSocket().write(loseResponse);
 
-    const winUser = this.users.find((user) => user.userId !== userId);
+    const winUser = getOpponentUserBySocket(socket);
 
     const winResponse = createResponse(PACKET_TYPE.GAME_END_REQUEST, winUser.getNextSequence(), {
       isWin: true,

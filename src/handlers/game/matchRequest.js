@@ -26,13 +26,12 @@ const matchRequest = (socket) => {
   */
   gameSession = getGameSession();
 
-  console.log('생성되거나 참여한 방 정보 확인 : ', gameSession);
-
   /*
-   그래서 Game Class instance는 addUser(user)로
-   matching을 돌리기 시작한 유저를 해당 게임에 속하게 해준다.
+  그래서 Game Class instance는 addUser(user)로
+  matching을 돌리기 시작한 유저를 해당 게임에 속하게 해준다.
   */
   gameSession.addUser(user);
+  console.log('생성되거나 참여한 방 정보 확인 : ', gameSession);
   // addUser에서 while문으로 유저가 2명이 아니면 무한 반복을 시켜줘야 한다고 생각했습니다.
   // 그래야 해당 게임에 존재하는 2명의 유저에게 서버가 클라이언트로 응답을 제공할 수 있다고 생각했습니다.
 };
