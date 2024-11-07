@@ -20,7 +20,7 @@ export const removeGameSession = (gameId) => {
   // 해당 방을 제거 및 나머지를 리턴
 };
 
-// 방 조회
+// 빈 방 조회
 export const getGameSession = () => {
   const sessions = gameSessions
     .map((session) => {
