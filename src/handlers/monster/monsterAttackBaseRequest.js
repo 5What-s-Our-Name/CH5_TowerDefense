@@ -1,41 +1,32 @@
 import { PACKET_TYPE } from '../../constants/header.js';
-import { getGameSession, getMyGameSession } from '../../sessions/game_session.js';
-import { getOpponentUserBySocket, getUserBySocket } from '../../sessions/user_session.js';
+import { getGameBySocket } from '../../sessions/game_session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
 const monsterAttackBaseRequest = (socket, sequence, payload) => {
   const { damage } = payload;
-  const user = getUserBySocket(socket);
-  const otherUser = getOpponentUserBySocket(socket);
-  if (!user || !otherUser) {
-    console.error(`User with socket ${socket} not found`);
-    return;
-  }
-  const game = getMyGameSession(user.userId);
-  if (!game) {
-    console.error(`Game session not found for user ID: ${user.userId}`);
-    return;
-  }
-  const currentHp = game.setBaseHit(user, damage);
+  const gameSession = getGameBySocket(socket);
+  const { user, opponent } = gameSession.getUsers(socket);
+
+  const baseHp = gameSession.setBaseHit(user, damage);
 
   const currentHpResponse = createResponse(
     PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
     user.getNextSequence(),
     {
       isOpponent: false,
-      baseHp: currentHp,
+      baseHp,
     },
   );
   user.socket.write(currentHpResponse);
   const otherUserCurrentHpResponse = createResponse(
     PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
-    otherUser.getNextSequence(),
+    opponent.getNextSequence(),
     {
       isOpponent: true,
-      baseHp: currentHp,
+      baseHp,
     },
   );
-  otherUser.socket.write(otherUserCurrentHpResponse);
+  opponent.socket.write(otherUserCurrentHpResponse);
 };
 
 export default monsterAttackBaseRequest;
