@@ -1,8 +1,13 @@
 const gameEndRequest = (socket) => {
   const user = getUserBySocket(socket);
-  if (user.getBaseHp() < 0) {
+  // HP가 0 이하일 때만 게임 종료
+  if (user.getBaseHp() <= 0) {
     const game = getMyGameSession(user.userId);
-    game.gameEndNotification(socket);
+    if (game) {
+      game.gameEndNotification(socket);
+    } else {
+      console.error(`Game session not found for user ID: ${user.userId}`);
+    }
   }
 };
 

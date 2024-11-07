@@ -80,7 +80,8 @@ class Game {
     const winResponse = createResponse(PACKET_TYPE.GAME_END_REQUEST, winUser.getNextSequence(), {
       isWin: true,
     });
-    winUser.socket.write(notification);
+    winUser.socket.write(winResponse);
+    console.log(loseResponse, winResponse);
   }
 }
 export default Game;
