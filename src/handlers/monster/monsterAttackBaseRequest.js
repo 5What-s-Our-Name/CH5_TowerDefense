@@ -1,7 +1,5 @@
 import { getGameSession, getMyGameSession } from '../../sessions/game_session.js';
 import { getUserBySocket } from '../../sessions/user_session.js';
-import { config } from '../../config/config.js';
-import jwt from 'jsonwebtoken';
 
 const monsterAttackBaseRequest = (socket, damage) => {
   const user = getUserBySocket(socket);
