@@ -3,8 +3,8 @@ import { PACKET_TYPE } from '../../constants/header.js';
 import { getGameBySocket } from '../../sessions/game_session.js';
 
 const monsterDeathNotification = (socket, sequence, payload) => {
-  const GameSession = getGameBySocket(socket);
-  GameSession.users
+  const gameSession = getGameBySocket(socket);
+  gameSession.users
     .filter((enemyUser) => enemyUser.socket !== socket) // 다른 사용자 필터링
     .forEach((enemyUser) => {
       const enemyMonsterDeathNotification = createResponse(

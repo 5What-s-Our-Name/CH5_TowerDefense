@@ -1,3 +1,4 @@
+import { initialGameState } from '../../assets/init.js';
 import { uuid } from '../../utils/util/uuid.js';
 
 class User {
@@ -24,6 +25,9 @@ class User {
         클라이언트별 sequence 번호를 통해 서버는 각 클라이언트의
         상태를 식별하고 관리할 수 있습니다.(구글 참조)
     */
+    this.towerId = 0;
+    this.gold = 2000;
+
     this.towerList = [];
 
     this.maxHp = 100;
@@ -37,8 +41,14 @@ class User {
   // }
 
   // 구매에 따른 해당 유저 타워 리스트에 타워 추가
-  addTower(tower) {
-    this.towerList.push(tower);
+  // addTower(tower) {
+  //   this.towerList.push(tower);
+  // }
+  addTower(x, y) {
+    initialGameState.initialGold -= initialGameState.towerCost
+    this.towerId++;
+    this.towerList.push({ towerId: this.towerId, x, y });
+    return this.towerId;
   }
 
   //  유저가 가지고 있는 전체 타워 리스트 반환
