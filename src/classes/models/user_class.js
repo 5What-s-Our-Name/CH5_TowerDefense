@@ -22,9 +22,22 @@ class User {
         클라이언트별 sequence 번호를 통해 서버는 각 클라이언트의
         상태를 식별하고 관리할 수 있습니다.(구글 참조)
     */
+    this.towerList = [];
+  }
 
-    this.maxHp = 100;
-    this.hp = this.maxHp;
+  // 구매에 따른 해당 유저 타워 리스트에 타워 추가
+  addTower(tower) {
+    this.towerList.push(tower);
+  }
+
+  //  유저가 가지고 있는 전체 타워 리스트 반환
+  getTowerList() {
+    return this.towerList;
+  }
+
+  // 타워 Id를 바탕으로 해당 타워(Tower Class Instance) 반환
+  getTower(towerId) {
+    return this.towerList.find((tower) => tower.towerId === towerId);
   }
 
   getSocket() {
