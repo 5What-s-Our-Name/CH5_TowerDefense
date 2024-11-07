@@ -49,14 +49,18 @@ class Game {
 
   startGame() {
     this.state = false;
+    let num = 0;
     this.users.forEach((user) => {
-      console.log(`${this.gameId} Game Start`);
+      const payload = num
+        ? { initialGameState, playerData: opponentData, opponentData: playerData }
+        : { initialGameState, playerData, opponentData };
       const startPacket = createResponse(
         PACKET_TYPE.MATCH_START_NOTIFICATION,
         user.getNextSequence(),
-        { initialGameState, playerData, opponentData },
+        payload,
       );
       user.getSocket().write(startPacket);
+      num++;
     });
   }
 
