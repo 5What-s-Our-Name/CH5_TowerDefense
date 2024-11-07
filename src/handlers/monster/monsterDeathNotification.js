@@ -14,7 +14,7 @@ const monsterDeathNotification = (socket, sequence, payload) => {
           ...payload,
         },
       );
-      console.log(enemyMonsterDeathNotification);
+      // console.log(enemyMonsterDeathNotification);
       enemyUser.socket.write(enemyMonsterDeathNotification); // 다른 사용자의 소켓에 알림 전송
     });
 };

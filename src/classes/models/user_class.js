@@ -29,6 +29,9 @@ class User {
     this.gold = 2000;
 
     this.towerList = [];
+
+    this.maxHp = 100;
+    this.hp = this.maxHp;
   }
 
   // addTower(x, y) {
@@ -77,6 +80,14 @@ class User {
 
     // 그리고 우리는 서버이기 때문에 ++로 정상 수신을
     // 클라이언트에게 알리고, 다음 요청을 보내는 것 입니다.
+  }
+
+  setBaseHit(damage) {
+    this.hp -= damage;
+  }
+
+  getBaseHp() {
+    return this.hp;
   }
 }
 

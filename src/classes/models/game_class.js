@@ -2,6 +2,9 @@ import { MAX_PLAYERS } from '../../constants/sessions.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { initialGameState, opponentData, playerData } from '../../assets/init.js';
+
+import { getOpponentUserBySocket, getUserBySocket } from '../../sessions/user_session.js';
+
 class Game {
   constructor(gameId) {
     this.gameId = gameId;
@@ -22,7 +25,9 @@ class Game {
     if (this.users.length >= MAX_PLAYERS) {
       new Error('방에 유저가 꽉 찬 상태 입니다.');
     }
+
     this.users.push(user);
+
     if (this.users.length === MAX_PLAYERS) {
       this.startGame();
     }
@@ -41,6 +46,7 @@ class Game {
   removeUser(socket) {
     this.users = this.users.filter((user) => user.socket !== socket);
   }
+
   startGame() {
     this.state = false;
     this.users.forEach((user) => {
@@ -52,6 +58,29 @@ class Game {
       );
       user.getSocket().write(startPacket);
     });
+  }
+
+  setBaseHit(user, damage) {
+    user.setBaseHit(damage);
+    return user.getBaseHp();
+  }
+
+  gameEndNotification(socket) {
+    const loseUser = getUserBySocket(socket);
+
+    const loseResponse = createResponse(
+      PACKET_TYPE.GAME_OVER_NOTIFICATION,
+      user.getNextSequence(),
+      { isWin: false },
+    );
+    loseUser.getSocket().write(loseResponse);
+
+    const winUser = getOpponentUserBySocket(socket);
+
+    const winResponse = createResponse(PACKET_TYPE.GAME_END_REQUEST, winUser.getNextSequence(), {
+      isWin: true,
+    });
+    winUser.socket.write(notification);
   }
 }
 export default Game;

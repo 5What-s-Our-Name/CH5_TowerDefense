@@ -30,6 +30,14 @@ export const getUserBySocket = (socket) => {
   return user;
 };
 
+export const getOpponentUserBySocket = (socket) => {
+  const opponentUser = userSessions.find((user) => user.socket !== socket);
+  if (!opponentUser) {
+    console.error('User not found : getOpponentUserBySocket');
+  }
+  return opponentUser;
+};
+
 // 특정 사용자의 다음 시퀀스를 가져옴
 export const getNextSequence = (userId) => {
   const user = getUserByUserId(userId);
