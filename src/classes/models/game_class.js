@@ -2,6 +2,7 @@ import { MAX_PLAYERS } from '../../constants/sessions.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { initialGameState, opponentData, playerData } from '../../assets/init.js';
+import { getUserBySocket } from '../../sessions/user_session.js';
 
 class Game {
   constructor(gameId) {
@@ -49,8 +50,32 @@ class Game {
     // 해당 방에 유저가 존재하는지 조회
   }
 
+  getOpponentUser(userId) {
+    return this.users.find((user) => user.userId !== userId);
+  }
+
   removeUser(userId) {
     this.users = this._users.filter((user) => user.userId !== userId);
+  }
+
+  makeMonster(monster, socket) {
+    const user = getUserBySocket(socket);
+
+    const response = createResponse(PACKET_TYPE.SPAWN_MONSTER_RESPONSE, user.getNextSequence(), {
+      monster,
+    });
+
+    user.socket.write(response);
+
+    const opponent = this.getOpponentUser(user.userId);
+
+    opponent.socket.write(
+      PACKET_TYPE.SPAWN_ENEMY_MONSTER_NOTIFICATION,
+      opponent.getNextSequence(),
+      {
+        monster,
+      },
+    );
   }
 
   startGame() {
