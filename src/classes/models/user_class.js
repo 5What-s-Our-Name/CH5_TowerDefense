@@ -23,6 +23,9 @@ class User {
         상태를 식별하고 관리할 수 있습니다.(구글 참조)
     */
     this.towerList = [];
+
+    this.maxHp = 100;
+    this.hp = this.maxHp;
   }
 
   // 구매에 따른 해당 유저 타워 리스트에 타워 추가
@@ -61,11 +64,7 @@ class User {
     // 클라이언트에게 알리고, 다음 요청을 보내는 것 입니다.
   }
 
-  setBaseHit(damage) {
-    this.hp -= damage;
-  }
-
-  getBaseHit() {
+  getBaseHp() {
     return this.hp;
   }
 }

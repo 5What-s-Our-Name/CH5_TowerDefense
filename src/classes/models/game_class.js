@@ -96,6 +96,51 @@ class Game {
       user.getSocket().write(startPacket);
     });
   }
+
+  setBaseHit(userId, damage) {
+    const user = this.users.find((user) => user.userId === userId);
+    const otherUser = this.users.find((user) => user.userId !== userId);
+    user.setBaseHit(damage); // ?
+
+    const currentHp = user.getBaseHP();
+
+    if (user.userId === userId) {
+      const currentHpResponse = createResponse(
+        PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
+        user.getNextSequence(),
+        {
+          isOpponent: false,
+          baseHp: currentHp,
+        },
+      );
+      const otherUserCurrentHpResponse = createResponse(
+        PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
+        otherUser.getNextSequence(),
+        {
+          isOpponent: true,
+          baseHp: currentHp,
+        },
+      );
+    }
+  }
+
+  gameEndNotification(userId) {
+    const loseUser = user.find((user) => user.userId === userId);
+
+    const loseResponse = createResponse(
+      PACKET_TYPE.GAME_OVER_NOTIFICATION,
+      user.getNextSequence(),
+      { isWin: false },
+    );
+    loseUser.getSocket().write(loseResponse);
+
+    const otherUser = this.users.find((user) => user.userId !== userId);
+
+    const winResponse = createResponse(PACKET_TYPE.GAME_END_REQUEST, otherUser.getNextSequence(), {
+      isWin: true,
+    });
+    otherUser.socket.write(notification);
+  }
 }
 
 export default Game;
