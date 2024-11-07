@@ -6,7 +6,6 @@ export const createGameSession = () => {
   // 게임 세션 아이디는 uuid 활용 생성
   const createdGameSession = addGameSession(gameId);
   if (createdGameSession) {
-    console.log(`[GAME_SESSION] Game session successfully created. - ${createdGameSession.id}`);
+    console.log(`[GAME_SESSION] Game session successfully created. - ${createdGameSession.gameId}`);
   }
-  console.log(`[FAIL] Failed to create game session`);
 };

@@ -55,7 +55,7 @@ class Game {
   }
 
   removeUser(userId) {
-    this.users = this._users.filter((user) => user.userId !== userId);
+    this.users = this.users.filter((user) => user.userId !== userId);
   }
 
   makeMonster(monster, socket) {
@@ -100,7 +100,7 @@ class Game {
   setBaseHit(userId, damage) {
     const user = this.users.find((user) => user.userId === userId);
     const otherUser = this.users.find((user) => user.userId !== userId);
-    user.setBaseHit(damage); // ?
+    user.setBaseHit(damage);
 
     const currentHp = user.getBaseHP();
 
@@ -125,7 +125,7 @@ class Game {
   }
 
   gameEndNotification(userId) {
-    const loseUser = user.find((user) => user.userId === userId);
+    const loseUser = this.users.find((user) => user.userId === userId);
 
     const loseResponse = createResponse(
       PACKET_TYPE.GAME_OVER_NOTIFICATION,
@@ -134,12 +134,12 @@ class Game {
     );
     loseUser.getSocket().write(loseResponse);
 
-    const otherUser = this.users.find((user) => user.userId !== userId);
+    const winUser = this.users.find((user) => user.userId !== userId);
 
-    const winResponse = createResponse(PACKET_TYPE.GAME_END_REQUEST, otherUser.getNextSequence(), {
+    const winResponse = createResponse(PACKET_TYPE.GAME_END_REQUEST, winUser.getNextSequence(), {
       isWin: true,
     });
-    otherUser.socket.write(notification);
+    winUser.socket.write(notification);
   }
 }
 
