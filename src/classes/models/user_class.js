@@ -22,6 +22,9 @@ class User {
         클라이언트별 sequence 번호를 통해 서버는 각 클라이언트의
         상태를 식별하고 관리할 수 있습니다.(구글 참조)
     */
+
+    this.maxHp = 100;
+    this.hp = this.maxHp;
   }
 
   getSocket() {
@@ -43,6 +46,14 @@ class User {
 
     // 그리고 우리는 서버이기 때문에 ++로 정상 수신을
     // 클라이언트에게 알리고, 다음 요청을 보내는 것 입니다.
+  }
+
+  setBaseHit(damage) {
+    this.hp -= damage;
+  }
+
+  getBaseHit() {
+    return this.hp;
   }
 }
 
