@@ -9,7 +9,7 @@
     "migrate": "node ./src/mysql/migration/createSchemas.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Tcoat1 <wlsduqwkd8876@naver.com>",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -23,5 +23,6 @@
     "protobufjs": "^7.4.0",
     "snowflake-id": "^1.1.0",
     "uuid": "^11.0.2"
-  }
+  },
+  "repository": "https://github.com/5What-s-Our-Name/CH5_TowerDefense.git"
 }
