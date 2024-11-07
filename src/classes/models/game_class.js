@@ -99,38 +99,9 @@ class Game {
     });
   }
 
-  setBaseHit(socket, damage) {
-    console.log(`damage: ${damage}`);
-    const user = getUserBySocket(socket);
-    const otherUser = getOpponentUserBySocket(socket);
-
-    const currentHp = user.getBaseHp();
-    if (user) {
-      user.setBaseHit(damage);
-      const currentHpResponse = createResponse(
-        PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
-        user.getNextSequence(),
-        {
-          isOpponent: false,
-          baseHp: currentHp,
-        },
-      );
-      console.log('userCurrentHpResponse: ', currentHpResponse);
-      user.socket.write(currentHpResponse);
-      const otherUserCurrentHpResponse = createResponse(
-        PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
-        otherUser.getNextSequence(),
-        {
-          isOpponent: true,
-          baseHp: currentHp,
-        },
-      );
-      console.log('otherUserCurrentHpResponse :', otherUserCurrentHpResponse);
-      otherUser.socket.write(otherUserCurrentHpResponse);
-    } else {
-      console.error(`User with socket ${socket} not found`);
-    }
-    console.log(`currentHp: ${currentHp}`);
+  setBaseHit(user, damage) {
+    user.setBaseHit(damage);
+    return user.getBaseHp();
   }
 
   gameEndNotification(socket) {
