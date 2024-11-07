@@ -48,8 +48,10 @@ export const getMyGameSession = (userId) => {
 };
 
 export const getGameBySocket = (socket) => {
-  for (const gameSession of gameSessions) {
-    return gameSession.users.find((user) => user.socket === socket);
+  for (const game of gameSessions) {
+    if (game.users.some((user) => user.socket === socket)) {
+      return game;
+    }
   }
 };
 

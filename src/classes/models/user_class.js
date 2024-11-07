@@ -1,3 +1,5 @@
+import { uuid } from '../../utils/util/uuid.js';
+
 class User {
   constructor(socket, userId) {
     this.socket = socket;
@@ -27,6 +29,12 @@ class User {
     this.maxHp = 100;
     this.hp = this.maxHp;
   }
+
+  // addTower(x, y) {
+  //   const towerId = uuid();
+  //   this.tower.push({ towerId, x, y });
+  //   return towerId;
+  // }
 
   // 구매에 따른 해당 유저 타워 리스트에 타워 추가
   addTower(tower) {

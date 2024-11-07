@@ -7,5 +7,7 @@ export const createGameSession = () => {
   const createdGameSession = addGameSession(gameId);
   if (createdGameSession) {
     console.log(`[GAME_SESSION] Game session successfully created. - ${createdGameSession.gameId}`);
+  } else {
+    console.log(`[FAIL] Failed to create game session`);
   }
 };
