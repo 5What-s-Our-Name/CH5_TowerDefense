@@ -6,5 +6,9 @@ const snowflake = new Snowflake.default({
 });
 
 export const uuid = () => {
-  return Number(snowflake.generate());
+  const randNum = Math.floor(Math.random() * 10000000) + 1;
+  const uuidString = snowflake.generate();
+  const subString = uuidString.slice(-8);
+
+  return Number(subString) + Number(randNum);
 };
