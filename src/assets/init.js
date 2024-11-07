@@ -43,7 +43,7 @@ export const playerData = {
     { x: 1130, y: 250 },
     { x: 1190, y: 250 },
   ],
-  basePosition: { x: 1370, y: 250 }, // 기지 위치
+  basePosition: { x: 1250, y: 250 }, // 기지 위치
 };
 
 export const opponentData = {
@@ -81,5 +81,5 @@ export const opponentData = {
     { x: 1130, y: 550 },
     { x: 1190, y: 550 },
   ],
-  basePosition: { x: 1370, y: 550 },
+  basePosition: { x: 1250, y: 250 },
 };

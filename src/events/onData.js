@@ -29,5 +29,5 @@ export const onData = (socket) => (data) => {
   const handler = handlers[payloadName];
   const decodedPayload = { ...GamePacket.decode(payload)[payloadName] };
 
-  handler(socket, sequence, decodedPayload);
+  handler(socket, decodedPayload);
 };
