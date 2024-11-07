@@ -46,6 +46,17 @@ class Game {
   removeUser(socket) {
     this.users = this.users.filter((user) => user.socket !== socket);
   }
+  resetUsers() {
+    this.users.forEach((user) => {
+      user.sequence = 0;
+      user.hp = user.maxHp;
+      user.gold = 2000;
+      user.towerList = [];
+    });
+  }
+  clearGameData() {
+    this.state = true;
+  }
 
   startGame() {
     this.state = false;
@@ -66,26 +77,14 @@ class Game {
 
   setBaseHit(user, damage) {
     user.setBaseHit(damage);
-    return user.getBaseHp();
+    const currentHp = user.getBaseHp();
+    const isGameOver = currentHp <= 0;
+    return { currentHp, isGameOver };
   }
 
-  gameEndNotification(socket) {
-    const loseUser = getUserBySocket(socket);
-
-    const loseResponse = createResponse(
-      PACKET_TYPE.GAME_OVER_NOTIFICATION,
-      user.getNextSequence(),
-      { isWin: false },
-    );
-    loseUser.getSocket().write(loseResponse);
-
-    const winUser = getOpponentUserBySocket(socket);
-
-    const winResponse = createResponse(PACKET_TYPE.GAME_END_REQUEST, winUser.getNextSequence(), {
-      isWin: true,
-    });
-    winUser.socket.write(winResponse);
-    console.log(loseResponse, winResponse);
+  gameEndNotification() {
+    this.resetUsers();
+    this.clearGameData();
   }
 }
 export default Game;
