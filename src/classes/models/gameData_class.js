@@ -19,14 +19,6 @@ class GameData extends User {
     this.gold -= initialGameState.towerCost;
   }
 
-  getScore() {
-    return this.score;
-  }
-
-  getGold() {
-    return this.gold;
-  }
-
   getTowerList() {
     return this.towerList;
   }
@@ -67,6 +59,18 @@ class GameData extends User {
     console.log('몬스터 리스트 확인 : ', this.monsterList);
     return { monsterId, monsterNumber };
   }
+
+  getMonsterSearchAndReward = (monster) => {
+    const reward = monsterInfo[monster.monsterNumber - 1];
+
+    this.gold += reward.gold;
+    this.score += reward.score;
+
+    console.log(`보상 돈 관련 ----->`, this.gold);
+    console.log(`보상 점수 관련 ----->`, this.score);
+
+    return { getGold: this.gold, getScore: this.score };
+  };
 }
 
 export default GameData;
