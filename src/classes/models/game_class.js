@@ -49,6 +49,7 @@ class Game {
     return this.users.find((user) => user.socket !== socket);
   }
   removeUser(socket) {
+    console.log('유저 삭제');
     this.users = this.users.filter((user) => user.socket !== socket);
   }
 
@@ -68,27 +69,6 @@ class Game {
 
       user.getSocket().write(startPacket);
     });
-  }
-
-  setBaseHit(user, damage) {
-    user.hp -= damage;
-    const currentHp = user.hp;
-    const isGameOver = currentHp <= 0;
-    return { currentHp, isGameOver };
-  }
-
-  addTower(socket, x, y) {
-    const user = this.getUser(socket);
-    user.gold -= initialGameState.towerCost;
-    const towerId = uuid();
-    user.towerList.push({ towerId, x, y });
-    return towerId;
-  }
-
-  //  유저가 가지고 있는 전체 타워 리스트 반환
-  getTowerList(socket) {
-    const user = this.getUser(socket);
-    return user.towerList;
   }
 }
 export default Game;

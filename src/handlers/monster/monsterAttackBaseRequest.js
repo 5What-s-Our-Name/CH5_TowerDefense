@@ -7,7 +7,7 @@ const monsterAttackBaseRequest = (socket, sequence, payload) => {
   const gameSession = getGameBySocket(socket);
   const { user, opponent } = gameSession.getUsers(socket);
 
-  const { currentHp, isGameOver } = gameSession.setBaseHit(user, damage);
+  const { currentHp, isGameOver } = user.setBaseHit(damage);
 
   const currentHpResponse = createResponse(
     PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
@@ -34,7 +34,6 @@ const monsterAttackBaseRequest = (socket, sequence, payload) => {
       user.getNextSequence(),
       { isWin: false },
     );
-    console.log(loseResponse);
     user.socket.write(loseResponse);
     const winResponse = createResponse(
       PACKET_TYPE.GAME_OVER_NOTIFICATION,
@@ -43,7 +42,6 @@ const monsterAttackBaseRequest = (socket, sequence, payload) => {
         isWin: true,
       },
     );
-    console.log(winResponse);
     opponent.socket.write(winResponse);
   }
 };

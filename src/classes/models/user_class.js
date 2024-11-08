@@ -1,6 +1,3 @@
-import { initialGameState } from '../../assets/init.js';
-import { uuid } from '../../utils/util/uuid.js';
-
 class User {
   constructor(socket, userId) {
     this.socket = socket;
