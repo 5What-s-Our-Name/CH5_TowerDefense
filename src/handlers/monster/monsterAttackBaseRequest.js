@@ -9,6 +9,8 @@ const monsterAttackBaseRequest = (socket, sequence, payload) => {
 
   const { currentHp, isGameOver } = user.setBaseHit(damage);
 
+  user.removeMonster();
+
   const currentHpResponse = createResponse(
     PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION,
     user.getNextSequence(),

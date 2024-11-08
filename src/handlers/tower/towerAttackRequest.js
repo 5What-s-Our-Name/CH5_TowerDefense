@@ -4,7 +4,7 @@ import { createResponse } from '../../utils/response/createResponse.js';
 
 const towerAttackRequest = (socket, sequence, payload) => {
   const gameSession = getGameBySocket(socket);
-  const { opponent } = gameSession.getUsers(socket);
+  const { user, opponent } = gameSession.getUsers(socket);
   const { towerId, monsterId } = payload;
 
   opponent.socket.write(
