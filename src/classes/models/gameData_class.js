@@ -12,6 +12,11 @@ class GameData extends User {
     this.hp = initialGameState.baseHp;
   }
 
+  minusGold() {
+    // TODO 검증 필요
+    this.gold -= initialGameState.towerCost;
+  }
+
   getScore() {
     return this.score;
     // 유저의 소켓 반환
@@ -38,8 +43,8 @@ class GameData extends User {
   }
 
   addTower(x, y) {
-    this.gold -= initialGameState.towerCost;
     const towerId = uuid();
+    minusGold();
     this.towerList.push({ towerId, x, y });
     return towerId;
   }
