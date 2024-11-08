@@ -37,17 +37,20 @@ class Game {
       }
     }
   }
-  getUsers(socket) {
-    const user = this.getUser(socket);
-    const opponent = this.getOpponentUser(socket);
+  getUser(socket, userId) {
+    const user = this.getUserBySocket(socket, userId, false);
+    const opponent = this.getUserBySocket(socket, userId, true);
     return { user, opponent };
   }
-  getUser(socket) {
-    return this.users.find((user) => user.socket === socket);
+
+  getUserBySocket(socket, userId, isOpponent = false) {
+    return this.users.find((user) =>
+      isOpponent
+        ? user.socket !== socket && user.userId !== userId
+        : user.socket === socket && user.userId === userId,
+    );
   }
-  getOpponentUser(socket) {
-    return this.users.find((user) => user.socket !== socket);
-  }
+
   removeUser(socket) {
     console.log('유저 삭제');
     this.users = this.users.filter((user) => user.socket !== socket);
