@@ -60,6 +60,7 @@ class GameData extends User {
     return { monsterId, monsterNumber };
   }
 
+
   removeMonster(monsterId = undefined) {
     let monster;
     if (monsterId === undefined) {
@@ -87,6 +88,19 @@ class GameData extends User {
     //   }),
     // );
   }
+
+  getMonsterSearchAndReward = (monster) => {
+    const reward = monsterInfo[monster.monsterNumber - 1];
+
+    this.gold += reward.gold;
+    this.score += reward.score;
+
+    console.log(`보상 돈 관련 ----->`, this.gold);
+    console.log(`보상 점수 관련 ----->`, this.score);
+
+    return { getGold: this.gold, getScore: this.score };
+  };
+
 }
 
 export default GameData;
