@@ -56,10 +56,8 @@ class GameData extends User {
       gold: monsterInfo[monsterNumber - 1].gold,
       score: monsterInfo[monsterNumber - 1].score,
     });
-    console.log('몬스터 생성 이후 리스트 : ', this.monsterList.length);
     return { monsterId, monsterNumber };
   }
-
 
   removeMonster(monsterId = undefined) {
     let monster;
@@ -67,7 +65,7 @@ class GameData extends User {
       monster = this.monsterList.shift();
     } else {
       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-      monster = this.monsterList.splice(index, 1);
+      monster = this.monsterList.splice(index, 1)[0];
     }
     this.getMonsterSearchAndReward(monster);
     this.sync();
@@ -95,12 +93,8 @@ class GameData extends User {
     this.gold += reward.gold;
     this.score += reward.score;
 
-    console.log(`보상 돈 관련 ----->`, this.gold);
-    console.log(`보상 점수 관련 ----->`, this.score);
-
     return { getGold: this.gold, getScore: this.score };
   };
-
 }
 
 export default GameData;
