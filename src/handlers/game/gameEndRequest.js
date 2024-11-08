@@ -1,8 +1,10 @@
+import { getGameBySocket } from '../../sessions/game_session.js';
+
 const gameEndRequest = (socket) => {
-  const user = getUserBySocket(socket);
-  if (user.getBaseHp() < 0) {
-    const game = getMyGameSession(user.userId);
-    game.gameEndNotification(socket);
+  const gameSession = getGameBySocket(socket);
+  if (gameSession) {
+    gameSession.gameEndNotification();
+    gameSession.removerUser(socket);
   }
 };
 
