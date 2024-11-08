@@ -69,14 +69,14 @@ class GameData extends User {
   }
 
   removeMonster(monsterId = undefined) {
+    let monster;
     if (monsterId === undefined) {
-      this.monsterList.shift();
+      monster = this.monsterList.shift();
     } else {
       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-      this.monsterList.splice(index, 1);
+      monster = this.monsterList.splice(index, 1);
     }
-    console.log('죽은 몬스터 : ', monsterId);
-    console.log('몬스터 죽인 이후 리스트 : ', this.monsterList.length);
+    this.getMonsterSearchAndReward(monster);
     this.sync();
   }
 

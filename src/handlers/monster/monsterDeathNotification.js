@@ -7,6 +7,7 @@ const monsterDeathNotification = (socket, sequence, payload) => {
   const { monsterId } = payload;
   const { user, opponent } = gameSession.getUsers(socket);
 
+  user.getMonsterSearchAndReward(monsterId);
   user.removeMonster(monsterId);
 
   opponent.socket.write(
