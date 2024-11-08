@@ -6,7 +6,6 @@ const towerAttackRequest = (socket, sequence, payload) => {
   const gameSession = getGameBySocket(socket);
   const { opponent } = gameSession.getUsers(socket);
   const { towerId, monsterId } = payload;
-  console.log(towerId, monsterId);
 
   opponent.socket.write(
     createResponse(PACKET_TYPE.ENEMY_TOWER_ATTACK_NOTIFICATION, opponent.getNextSequence(), {
