@@ -19,14 +19,6 @@ class GameData extends User {
     this.gold -= initialGameState.towerCost;
   }
 
-  getScore() {
-    return this.score;
-  }
-
-  getGold() {
-    return this.gold;
-  }
-
   getTowerList() {
     return this.towerList;
   }
