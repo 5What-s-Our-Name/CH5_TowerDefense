@@ -35,9 +35,7 @@ class GameData extends User {
 
   setBaseHit(damage) {
     this.hp -= damage;
-    const currentHp = this.hp;
-    const isGameOver = currentHp <= 0;
-    return { currentHp, isGameOver };
+    return this.hp;
   }
 
   addTower(x, y) {
