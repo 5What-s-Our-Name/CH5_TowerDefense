@@ -50,7 +50,7 @@ class Game {
     this.users.forEach((user) => {
       user.sequence = 0;
       user.hp = user.maxHp;
-      user.gold = 2000;
+      user.gold = 5000;
       user.towerList = [];
     });
   }
