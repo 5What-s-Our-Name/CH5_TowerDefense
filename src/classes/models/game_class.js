@@ -1,9 +1,10 @@
 import { MAX_PLAYERS } from '../../constants/sessions.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
-import { initialGameState, opponentData, playerData } from '../../assets/init.js';
+import { initialGameState } from '../../assets/init.js';
 import { delay } from '../../utils/util/delay.js';
 import { copyInstance } from '../../utils/game/copyInstance.js';
+import { initHighScore } from '../../utils/game/initHighScore.js';
 
 class Game {
   constructor(gameId) {
@@ -53,7 +54,8 @@ class Game {
     this.users = this.users.filter((user) => user.socket !== socket);
   }
 
-  startGame() {
+  async startGame() {
+    const { playerData, opponentData } = await initHighScore(this.users);
     this.state = false;
 
     this.users.forEach((user, index) => {
