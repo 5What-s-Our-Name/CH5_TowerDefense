@@ -56,7 +56,6 @@ class GameData extends User {
       gold: monsterInfo[monsterNumber - 1].gold,
       score: monsterInfo[monsterNumber - 1].score,
     });
-    console.log('몬스터 생성 이후 리스트 : ', this.monsterList.length);
     return { monsterId, monsterNumber };
   }
 
@@ -68,7 +67,6 @@ class GameData extends User {
       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
       monster = this.monsterList.splice(index, 1)[0];
     }
-    console.log('사망한 몬스터 조회 : ', monster);
     this.getMonsterSearchAndReward(monster);
     this.sync();
   }
@@ -90,14 +88,10 @@ class GameData extends User {
   }
 
   getMonsterSearchAndReward = (monster) => {
-    console.log('몬스터 식별 : ', monster);
     const reward = monsterInfo[monster.monsterNumber - 1];
 
     this.gold += reward.gold;
     this.score += reward.score;
-
-    console.log(`보상 돈 관련 ----->`, this.gold);
-    console.log(`보상 점수 관련 ----->`, this.score);
 
     return { getGold: this.gold, getScore: this.score };
   };
