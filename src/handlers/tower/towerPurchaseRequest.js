@@ -6,7 +6,7 @@ const towerPurchaseRequest = (socket, sequence, payload) => {
   const gameSession = getGameBySocket(socket);
   const { user, opponent } = gameSession.getUsers(socket);
   const { x, y } = payload;
-  const towerId = user.addTower(x, y);
+  const towerId = gameSession.addTower(socket, x, y);
 
   user.socket.write(
     createResponse(PACKET_TYPE.TOWER_PURCHASE_RESPONSE, user.getNextSequence(), { towerId }),
