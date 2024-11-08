@@ -60,15 +60,15 @@ class GameData extends User {
     return { monsterId, monsterNumber };
   }
 
-
   removeMonster(monsterId = undefined) {
     let monster;
     if (monsterId === undefined) {
       monster = this.monsterList.shift();
     } else {
       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-      monster = this.monsterList.splice(index, 1);
+      monster = this.monsterList.splice(index, 1)[0];
     }
+    console.log('사망한 몬스터 조회 : ', monster);
     this.getMonsterSearchAndReward(monster);
     this.sync();
   }
@@ -90,6 +90,7 @@ class GameData extends User {
   }
 
   getMonsterSearchAndReward = (monster) => {
+    console.log('몬스터 식별 : ', monster);
     const reward = monsterInfo[monster.monsterNumber - 1];
 
     this.gold += reward.gold;
@@ -100,7 +101,6 @@ class GameData extends User {
 
     return { getGold: this.gold, getScore: this.score };
   };
-
 }
 
 export default GameData;
