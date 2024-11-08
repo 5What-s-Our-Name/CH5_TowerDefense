@@ -1,88 +1,41 @@
-import { uuid } from '../utils/util/uuid.js';
+import { config } from '../config/config.js';
+import { makeInitPath } from '../utils/game/makeInitPath.js';
+import { makeInitTower } from '../utils/game/makeInitTower.js';
+
+const { baseHp, towerCost, initialGold, monsterSpawnInterval, monsterLevel, towerCount } =
+  config.init;
 
 export const initialGameState = {
-  baseHp: 100,
-  towerCost: 1000,
-  initialGold: 10000,
-  monsterSpawnInterval: 2000,
+  baseHp,
+  towerCost,
+  initialGold,
+  monsterSpawnInterval,
 };
 
+const playerPath = makeInitPath();
 export const playerData = {
-  gold: 150, // 현재 골드
-  baseHp: 100, // 기지의 현재 HP
-  maxHp: 100, // 기지의 최대 HP
+  gold: initialGold, // 현재 골드
+  baseHp, // 기지의 현재 HP
+  maxHp: baseHp, // 기지의 최대 HP
   highScore: 0, // 플레이어의 최고 점수
-  towers: [
-    // 플레이어의 타워 목록
-    { towerId: uuid(), x: 900, y: 400 },
-    { towerId: uuid(), x: 1000, y: 400 },
-    { towerId: uuid(), x: 1100, y: 400 },
-  ],
+  towers: makeInitTower(towerCount),
   monsters: [],
-  monsterLevel: 1, // 몬스터의 현재 레벨
+  monsterLevel, // 몬스터의 현재 레벨
   score: 0, // 플레이어의 현재 점수
-  monsterPath: [
-    // 몬스터 이동 경로
-    { x: 0, y: 250 },
-    { x: 50, y: 250 },
-    { x: 110, y: 270 },
-    { x: 170, y: 250 },
-    { x: 230, y: 230 },
-    { x: 290, y: 250 },
-    { x: 350, y: 250 },
-    { x: 410, y: 250 },
-    { x: 470, y: 260 },
-    { x: 530, y: 260 },
-    { x: 590, y: 260 },
-    { x: 650, y: 250 },
-    { x: 710, y: 240 },
-    { x: 770, y: 240 },
-    { x: 830, y: 250 },
-    { x: 890, y: 250 },
-    { x: 950, y: 250 },
-    { x: 1010, y: 250 },
-    { x: 1070, y: 250 },
-    { x: 1130, y: 250 },
-    { x: 1190, y: 250 },
-  ],
-  basePosition: { x: 1370, y: 250 }, // 기지 위치
+  monsterPath: playerPath[0],
+  basePosition: playerPath[1], // 기지 위치
 };
 
+const oppoPath = makeInitPath();
 export const opponentData = {
-  gold: 120,
-  baseHp: 100,
-  maxHp: 100,
-  highScore: 0,
-  towers: [
-    { towerId: uuid(), x: 900, y: 400 },
-    { towerId: uuid(), x: 1000, y: 400 },
-    { towerId: uuid(), x: 1100, y: 400 },
-  ],
+  gold: initialGold, // 현재 골드
+  baseHp, // 기지의 현재 HP
+  maxHp: baseHp, // 기지의 최대 HP
+  highScore: 0, // 플레이어의 최고 점수
+  towers: makeInitTower(towerCount),
   monsters: [],
-  monsterLevel: 1,
-  score: 300,
-  monsterPath: [
-    { x: 0, y: 250 },
-    { x: 50, y: 250 },
-    { x: 110, y: 270 },
-    { x: 170, y: 250 },
-    { x: 230, y: 230 },
-    { x: 290, y: 250 },
-    { x: 350, y: 250 },
-    { x: 410, y: 250 },
-    { x: 470, y: 250 },
-    { x: 530, y: 250 },
-    { x: 590, y: 250 },
-    { x: 650, y: 250 },
-    { x: 710, y: 250 },
-    { x: 770, y: 250 },
-    { x: 830, y: 250 },
-    { x: 890, y: 250 },
-    { x: 950, y: 250 },
-    { x: 1010, y: 250 },
-    { x: 1070, y: 250 },
-    { x: 1130, y: 250 },
-    { x: 1190, y: 250 },
-  ],
-  basePosition: { x: 1370, y: 250 },
+  monsterLevel, // 몬스터의 현재 레벨
+  score: 0, // 플레이어의 현재 점수
+  monsterPath: oppoPath[0],
+  basePosition: oppoPath[1], // 기지 위치
 };

@@ -16,6 +16,14 @@ import {
   PACKET_TYPE_LENGTH,
   PACKET_VERSION_LENGTH,
 } from '../constants/header.js';
+import {
+  BASE_HP,
+  INIT_MONSTER_LEVEL,
+  INIT_TOWER_COUNT,
+  INITIAL_GOLD,
+  MONSTER_SPAWN_INTERVAL,
+  TOWER_COST,
+} from '../constants/initGame.js';
 
 export const config = {
   server: {
@@ -44,5 +52,13 @@ export const config = {
     pepper: PEPPER,
     salt: SALT,
     secret_key: SECRET_KEY,
+  },
+  init: {
+    baseHp: BASE_HP,
+    towerCost: TOWER_COST,
+    initialGold: INITIAL_GOLD,
+    monsterSpawnInterval: MONSTER_SPAWN_INTERVAL,
+    monsterLevel: INIT_MONSTER_LEVEL,
+    towerCount: INIT_TOWER_COUNT,
   },
 };
