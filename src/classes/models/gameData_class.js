@@ -1,4 +1,5 @@
 import { initialGameState } from '../../assets/init.js';
+import { uuid } from '../../utils/util/uuid.js';
 import User from './user_class.js';
 
 class GameData extends User {
@@ -27,6 +28,25 @@ class GameData extends User {
 
   getHp() {
     return this.hp;
+  }
+
+  setBaseHit(damage) {
+    this.hp -= damage;
+    const currentHp = this.hp;
+    const isGameOver = currentHp <= 0;
+    return { currentHp, isGameOver };
+  }
+
+  addTower(x, y) {
+    this.gold -= initialGameState.towerCost;
+    const towerId = uuid();
+    this.towerList.push({ towerId, x, y });
+    return towerId;
+  }
+
+  //  유저가 가지고 있는 전체 타워 리스트 반환
+  getTowerList() {
+    return this.towerList;
   }
 }
 
