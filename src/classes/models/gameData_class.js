@@ -56,8 +56,37 @@ class GameData extends User {
       gold: monsterInfo[monsterNumber - 1].gold,
       score: monsterInfo[monsterNumber - 1].score,
     });
-    console.log('몬스터 리스트 확인 : ', this.monsterList);
+    console.log('몬스터 생성 이후 리스트 : ', this.monsterList.length);
     return { monsterId, monsterNumber };
+  }
+
+
+  removeMonster(monsterId = undefined) {
+    let monster;
+    if (monsterId === undefined) {
+      monster = this.monsterList.shift();
+    } else {
+      const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
+      monster = this.monsterList.splice(index, 1);
+    }
+    this.getMonsterSearchAndReward(monster);
+    this.sync();
+  }
+
+  // 나와 상대한테 상태동기화를 위한
+  sync() {
+    // this.socket.write(
+    //   createResponse(PACKET_TYPE.STATE_SYNC_NOTIFICATION, user.getNextSequence(), {
+    //     {
+    //       int32 userGold,
+    //       int32 baseHp,
+    //       int32 monsterLevel,
+    //       int32 score,
+    //       repeated TowerData towers,
+    //       repeated MonsterData monsters,
+    //   }
+    //   }),
+    // );
   }
 
   getMonsterSearchAndReward = (monster) => {
@@ -71,6 +100,7 @@ class GameData extends User {
 
     return { getGold: this.gold, getScore: this.score };
   };
+
 }
 
 export default GameData;
