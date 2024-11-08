@@ -2,6 +2,8 @@ import { initialGameState } from '../../assets/init.js';
 import { uuid } from '../../utils/util/uuid.js';
 import User from './user_class.js';
 import { monsterInfo } from '../../assets/monster.js';
+import { createResponse } from '../../utils/response/createResponse.js';
+import { PACKET_TYPE } from '../../constants/header.js';
 
 class GameData extends User {
   constructor(userInstance) {
@@ -73,18 +75,16 @@ class GameData extends User {
 
   // 나와 상대한테 상태동기화를 위한
   sync() {
-    // this.socket.write(
-    //   createResponse(PACKET_TYPE.STATE_SYNC_NOTIFICATION, user.getNextSequence(), {
-    //     {
-    //       int32 userGold,
-    //       int32 baseHp,
-    //       int32 monsterLevel,
-    //       int32 score,
-    //       repeated TowerData towers,
-    //       repeated MonsterData monsters,
-    //   }
-    //   }),
-    // );
+    this.socket.write(
+      createResponse(PACKET_TYPE.STATE_SYNC_NOTIFICATION, this.getNextSequence(), {
+        userGold: this.gold,
+        baseHp: this.hp,
+        monsterLevel: this.score / 1000 + 1,
+        score: this.score,
+        towers: this.towerList,
+        monsters: this.monsterList,
+      }),
+    );
   }
 
   getMonsterSearchAndReward = (monster) => {
