@@ -2,6 +2,7 @@ import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getGameBySocket } from '../../sessions/game_session.js';
 import { delay } from '../../utils/util/delay.js';
+import { handleErr } from '../../utils/error/handlerErr.js';
 
 const monsterDeathNotification = (socket, sequence, payload) => {
   try {
