@@ -1,8 +1,22 @@
+import { PACKET_TYPE } from '../../constants/header.js';
 import { GlobalFailCode } from '../../init/loadProto.js';
+import { getGameBySocket } from '../../sessions/game_session.js';
+import { saveHighScore } from '../game/score.js';
 import { createResponse } from '../response/createResponse.js';
 export const handleErr = (socket, type, err) => {
   let failCode;
   let message;
+
+  const gameSession = getGameBySocket(socket);
+
+  if (!gameSession.getOpponentUser(socket)) {
+    const user = gameSession.getUser(socket);
+    saveHighScore(user.userId, user.score);
+    user.socket.write(
+      createResponse(PACKET_TYPE.GAME_OVER_NOTIFICATION, user.getNextSequence(), { isWin: true }),
+    );
+    return;
+  }
 
   if (err.code) {
     failCode = err.code;

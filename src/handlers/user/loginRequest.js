@@ -50,7 +50,6 @@ const loginRequest = async (socket, sequence, payload) => {
     socket.write(response);
   } catch (err) {
     handleErr(socket, PACKET_TYPE.LOGIN_RESPONSE, err);
-    console.error('Error during login:', err.message);
   }
 };
 
