@@ -62,6 +62,7 @@ export const getAllGameSessions = () => {
 
 export const exitGameSession = (socket) => {
   const gameSession = getGameBySocket(socket);
+  if (!gameSession) return;
   gameSession.removeUser(socket);
   if (gameSession.getUserCount() === 0) {
     removeGameSession(gameSession.gameId);
