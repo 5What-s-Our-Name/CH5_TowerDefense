@@ -8,7 +8,7 @@ import pools from './../../mysql/createPool.js';
 import CustomErr from './../../utils/error/customErr.js';
 import bcrypt from 'bcrypt';
 
-const registerRequest = async (socket, sequence, payload) => {
+const registerRequest = async (socket, payload) => {
   const { id, email } = payload;
   let { password } = payload;
 
@@ -33,7 +33,7 @@ const registerRequest = async (socket, sequence, payload) => {
       await pools.USER_DB.query(sql, [id, hashedPassword, email]);
 
       // 성공 response
-      const result = createResponse(PACKET_TYPE.REGISTER_RESPONSE, sequence, {
+      const result = createResponse(PACKET_TYPE.REGISTER_RESPONSE, 1, {
         success: true,
         message: 'Registration completed successfully',
       });

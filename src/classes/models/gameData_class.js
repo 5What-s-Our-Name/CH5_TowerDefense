@@ -1,25 +1,23 @@
-import { initialGameState } from '../../assets/init.js';
 import { uuid } from '../../utils/util/uuid.js';
 import User from './user_class.js';
 import { monsterInfo } from '../../assets/monster.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
+import { config } from '../../config/config.js';
 
 class GameData extends User {
   constructor(userInstance) {
     super(userInstance.socket, userInstance.userId);
 
     this.score = 0;
-    this.gold = initialGameState.initialGold;
+    this.gold = config.init.initialGold;
     this.towerList = [];
     this.monsterList = [];
-    this.hp = initialGameState.baseHp;
-    this.sequenceList = [];
+    this.hp = config.init.baseHp;
   }
 
   minusGold() {
-    // TODO 검증 필요
-    this.gold -= initialGameState.towerCost;
+    this.gold -= config.init.towerCost;
   }
 
   getTowerList() {
@@ -45,15 +43,6 @@ class GameData extends User {
     this.towerList.push({ towerId, x, y });
     return towerId;
   }
-
-  addSequenceList(sequence) {
-    this.sequenceList.push(sequence);
-  }
-
-  getSequenceList() {
-    return this.sequenceList;
-  }
-
   addMonster() {
     const monsterId = uuid();
     const monsterNumber = Math.floor(Math.random() * 5) + 1;
@@ -80,7 +69,6 @@ class GameData extends User {
     this.sync();
   }
 
-  // 나와 상대한테 상태동기화를 위한
   sync() {
     this.socket.write(
       createResponse(PACKET_TYPE.STATE_SYNC_NOTIFICATION, this.getNextSequence(), {

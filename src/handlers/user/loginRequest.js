@@ -2,7 +2,7 @@ import { config } from '../../config/config.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { GlobalFailCode } from '../../init/loadProto.js';
 import pools from '../../mysql/createPool.js';
-import { addUser, getUserByUserId } from '../../sessions/user_session.js';
+import { addUser } from '../../sessions/user_session.js';
 import CustomErr from '../../utils/error/customErr.js';
 import { handleErr } from '../../utils/error/handlerErr.js';
 import { isLogin } from '../../utils/game/isLogin.js';
@@ -10,7 +10,7 @@ import { createJWT } from '../../utils/jwt/createToken.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
 
-const loginRequest = async (socket, sequence, payload) => {
+const loginRequest = async (socket, payload) => {
   const { id } = payload;
   let { password } = payload;
 
@@ -38,7 +38,7 @@ const loginRequest = async (socket, sequence, payload) => {
     const token = createJWT(id);
 
     // response 생성
-    const response = createResponse(PACKET_TYPE.LOGIN_RESPONSE, sequence, {
+    const response = createResponse(PACKET_TYPE.LOGIN_RESPONSE, 1, {
       success: true,
       message: 'Login Successful',
       token,
