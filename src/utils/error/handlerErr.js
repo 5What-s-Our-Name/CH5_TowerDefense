@@ -16,7 +16,7 @@ export const handleErr = (socket, type, err) => {
 
   //INCOMPLETE: 시퀀스 부분 연동 필요
   const errResponse = createResponse(type, 1, {
-    success: 'error',
+    success: false,
     message,
     failCode,
   });
