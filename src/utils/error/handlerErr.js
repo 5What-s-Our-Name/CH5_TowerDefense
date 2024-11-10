@@ -9,7 +9,7 @@ export const handleErr = (socket, type, err) => {
 
   const gameSession = getGameBySocket(socket);
 
-  if (!gameSession.getOpponentUser(socket)) {
+  if (gameSession && !gameSession.getOpponentUser(socket)) {
     const user = gameSession.getUser(socket);
     saveHighScore(user.userId, user.score);
     user.socket.write(

@@ -19,8 +19,8 @@ const monsterAttackBaseRequest = (socket, _, payload) => {
       ? PACKET_TYPE.GAME_OVER_NOTIFICATION
       : PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION;
 
-    const userPayload = { isOpponent: false, baseHp, isWin: !isGameOver };
-    const opponentPayload = { isOpponent: true, baseHp, isWin: isGameOver };
+    const userPayload = isGameOver ? { isWin: !isGameOver } : { isOpponent: false, baseHp };
+    const opponentPayload = isGameOver ? { isWin: isGameOver } : { isOpponent: true, baseHp };
 
     user.socket.write(createResponse(packetType, user.getNextSequence(), userPayload));
 

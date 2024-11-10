@@ -14,6 +14,7 @@ class GameData extends User {
     this.towerList = [];
     this.monsterList = [];
     this.hp = initialGameState.baseHp;
+    this.sequenceList = [];
   }
 
   minusGold() {
@@ -43,6 +44,14 @@ class GameData extends User {
     this.minusGold();
     this.towerList.push({ towerId, x, y });
     return towerId;
+  }
+
+  addSequenceList(sequence) {
+    this.sequenceList.push(sequence);
+  }
+
+  getSequenceList() {
+    return this.sequenceList;
   }
 
   addMonster() {

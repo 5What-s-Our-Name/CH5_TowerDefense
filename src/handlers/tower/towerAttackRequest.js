@@ -5,7 +5,7 @@ import { handleErr } from '../../utils/error/handlerErr.js';
 const towerAttackRequest = (socket, sequence, payload) => {
   try {
     const gameSession = getGameBySocket(socket);
-    const { user, opponent } = gameSession.getUsers(socket);
+    const { opponent } = gameSession.getUsers(socket);
     const { towerId, monsterId } = payload;
 
     opponent.socket.write(
