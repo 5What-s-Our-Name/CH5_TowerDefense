@@ -2,7 +2,7 @@ import { getGameBySocket } from '../../sessions/game_session.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { handleErr } from '../../utils/error/handlerErr.js';
-const towerAttackRequest = (socket, sequence, payload) => {
+const towerAttackRequest = (socket, payload) => {
   try {
     const gameSession = getGameBySocket(socket);
     const { opponent } = gameSession.getUsers(socket);

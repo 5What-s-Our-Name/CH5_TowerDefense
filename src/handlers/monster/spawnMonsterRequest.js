@@ -3,7 +3,7 @@ import { getGameBySocket } from '../../sessions/game_session.js';
 import { handleErr } from '../../utils/error/handlerErr.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
-const spawnMonsterRequest = (socket, sequence, payload) => {
+const spawnMonsterRequest = (socket) => {
   try {
     const gameSession = getGameBySocket(socket);
 

@@ -1,4 +1,4 @@
-import { exitGameSession, getGameBySocket } from '../sessions/game_session.js';
+import { exitGameSession } from '../sessions/game_session.js';
 import { removeUser } from '../sessions/user_session.js';
 
 export const onEnd = (socket) => () => {
