@@ -10,10 +10,9 @@ const monsterAttackBaseRequest = (socket, payload) => {
 
     const { user, opponent } = gameSession.getUsers(socket);
 
-    user.removeMonster();
-
     const baseHp = user.setBaseHit(damage);
     const isGameOver = baseHp <= 0;
+    user.removeMonster();
 
     const packetType = isGameOver
       ? PACKET_TYPE.GAME_OVER_NOTIFICATION

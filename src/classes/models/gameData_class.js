@@ -34,7 +34,7 @@ class GameData extends User {
 
   setBaseHit(damage) {
     this.hp -= damage;
-    return this.hp;
+    return Math.floor(this.hp);
   }
 
   addTower(x, y) {
@@ -58,14 +58,13 @@ class GameData extends User {
   }
 
   removeMonster(monsterId = undefined) {
-    let monster;
     if (monsterId === undefined) {
-      monster = this.monsterList.shift();
+      this.monsterList.shift();
     } else {
       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-      monster = this.monsterList.splice(index, 1)[0];
+      const monster = this.monsterList.splice(index, 1)[0];
+      this.getMonsterSearchAndReward(monster);
     }
-    this.getMonsterSearchAndReward(monster);
     this.sync();
   }
 
@@ -84,11 +83,8 @@ class GameData extends User {
 
   getMonsterSearchAndReward = (monster) => {
     const reward = monsterInfo[monster.monsterNumber - 1];
-
     this.gold += reward.gold;
     this.score += reward.score;
-
-    return { getGold: this.gold, getScore: this.score };
   };
 }
 

@@ -2,7 +2,6 @@ import Game from '../classes/models/game_class.js';
 import { MAX_PLAYERS } from '../constants/sessions.js';
 import { createGameSession } from '../utils/function/game/create_game_session.js';
 import { gameSessions } from './session.js';
-import { getUserBySocket } from './user_session.js';
 
 // 방 생성 및 게임 세션에 추가
 export const addGameSession = (gameId) => {

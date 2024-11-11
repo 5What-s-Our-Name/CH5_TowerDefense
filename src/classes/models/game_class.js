@@ -47,7 +47,6 @@ class Game {
     return this.users.find((user) => user.socket !== socket);
   }
   removeUser(socket) {
-    console.log('유저 삭제');
     this.users = this.users.filter((user) => user.socket !== socket);
   }
 
