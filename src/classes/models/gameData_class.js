@@ -24,6 +24,10 @@ class GameData extends User {
     return this.towerList;
   }
 
+  // getTowerSearch(towerId) {
+  //   return this.towerList.find((tower) => tower.towerId === towerId);
+  // }
+
   getMonsterList() {
     return this.monsterList;
   }
