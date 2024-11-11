@@ -10,8 +10,8 @@ const towerAttackRequest = (socket, payload) => {
 
     const { towerId, monsterId } = payload;
 
-    if (!user.getTowerSearch(towerId))
-      throw CustomErr(PACKET_TYPE.TOWER_ATTACK_REQUEST, '유저가 보유하지 않은 타워 입니다.');
+    // if (!user.getTowerSearch(towerId))
+    //   throw CustomErr(PACKET_TYPE.TOWER_ATTACK_REQUEST, '유저가 보유하지 않은 타워 입니다.');
 
     opponent.socket.write(
       createResponse(PACKET_TYPE.ENEMY_TOWER_ATTACK_NOTIFICATION, opponent.getNextSequence(), {
