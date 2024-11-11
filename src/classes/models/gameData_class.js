@@ -3,6 +3,7 @@ import User from './user_class.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { config } from '../../config/config.js';
+import { monsterInfo } from './../../assets/monster';
 
 class GameData extends User {
   constructor(userInstance) {
@@ -68,6 +69,11 @@ class GameData extends User {
     }
     this.sync();
   }
+  getMonsterSearchAndReward = (monster) => {
+    const reward = monsterInfo[monster.monsterNumber - 1];
+    this.gold += reward.gold;
+    this.score += reward.score;
+  };
 
   sync() {
     this.socket.write(
