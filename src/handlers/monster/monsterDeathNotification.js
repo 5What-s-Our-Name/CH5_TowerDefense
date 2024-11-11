@@ -9,13 +9,12 @@ const monsterDeathNotification = (socket, payload) => {
     const { monsterId } = payload;
     const { user, opponent } = gameSession.getUsers(socket);
 
-    user.removeMonster(monsterId);
-
     opponent.socket.write(
       createResponse(PACKET_TYPE.ENEMY_MONSTER_DEATH_NOTIFICATION, opponent.getNextSequence(), {
         monsterId,
       }),
     );
+    user.removeMonster(monsterId);
   } catch (error) {
     handleErr(socket, 1, error);
   }
