@@ -1,6 +1,5 @@
 import { uuid } from '../../utils/util/uuid.js';
 import User from './user_class.js';
-import { monsterInfo } from '../../assets/monster.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { config } from '../../config/config.js';
@@ -11,11 +10,9 @@ class GameData extends User {
 
     this.score = 0;
     this.gold = config.init.initialGold;
-    this.towerList = [];
-    this.monsterList = [];
+    this.towerMap = new Map();
+    this.monsterMap = new Map();
     this.hp = config.init.baseHp;
-    this.towerCount = 0;
-    this.monsterCount = 0;
   }
 
   minusGold() {
@@ -23,11 +20,11 @@ class GameData extends User {
   }
 
   getTowerList() {
-    return this.towerList;
+    return [...this.towerMap.values()];
   }
 
   getMonsterList() {
-    return this.monsterList;
+    return [...this.monsterMap.values()];
   }
 
   getHp() {
@@ -41,28 +38,33 @@ class GameData extends User {
 
   addTower(x, y) {
     const towerId = uuid();
+    this.towerMap.set(towerId, { towerId, x, y });
     this.minusGold();
-    this.towerList.push({ towerId, x, y });
     return towerId;
   }
+
   addMonster() {
     const monsterId = uuid();
     const monsterNumber = Math.floor(Math.random() * 5) + 1;
-    this.monsterList.push({
+    const monster = {
       monsterId,
       monsterNumber,
       level: 1,
-    });
-    return { monsterId, monsterNumber };
+    };
+    this.monsterMap.set(monsterId, monster);
+    return monster;
   }
 
   removeMonster(monsterId = undefined) {
     if (monsterId === undefined) {
-      this.monsterList.shift();
+      const firstMonsterId = this.monsterMap.keys().next().value;
+      this.monsterMap.delete(firstMonsterId);
     } else {
-      const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-      const monster = this.monsterList.splice(index, 1)[0];
-      this.getMonsterSearchAndReward(monster);
+      const monster = this.monsterMap.get(monsterId);
+      if (monster) {
+        this.getMonsterSearchAndReward(monster);
+        this.monsterMap.delete(monsterId);
+      }
     }
     this.sync();
   }
@@ -74,17 +76,11 @@ class GameData extends User {
         baseHp: this.hp,
         monsterLevel: this.score / 1000 + 1,
         score: this.score,
-        towers: this.towerList,
-        monsters: this.monsterList,
+        towers: [...this.towerMap.values()],
+        monsters: [...this.monsterMap.values()],
       }),
     );
   }
-
-  getMonsterSearchAndReward = (monster) => {
-    const reward = monsterInfo[monster.monsterNumber - 1];
-    this.gold += reward.gold;
-    this.score += reward.score;
-  };
 }
 
 export default GameData;

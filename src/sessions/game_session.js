@@ -47,7 +47,7 @@ export const getMyGameSession = (userId) => {
 
 export const getGameBySocket = (socket) => {
   for (const game of gameSessions) {
-    if (game.users.some((user) => user.socket.name === socket.name)) {
+    if (game.users.has(socket.name)) {
       return game;
     }
   }
