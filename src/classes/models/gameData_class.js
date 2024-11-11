@@ -56,12 +56,14 @@ class GameData extends User {
   }
 
   removeMonster(monsterId = undefined) {
-    if (monsterId === undefined) {
+    if (monsterId === undefined && this.monsterList.length > 0) {
       this.monsterList.shift();
-    } else {
+    } else if (this.monsterList.length > 0) {
       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-      const monster = this.monsterList.splice(index, 1)[0];
-      this.getMonsterSearchAndReward(monster);
+      if (index !== -1) {
+        const monster = this.monsterList.splice(index, 1)[0];
+        if (monster) this.getMonsterSearchAndReward(monster); // 죽인 몬스터가 진짜 있을 경우
+      }
     }
     this.sync();
   }
