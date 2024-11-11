@@ -3,7 +3,7 @@ import User from './user_class.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { config } from '../../config/config.js';
-import { monsterInfo } from './../../assets/monster';
+import { monsterInfo } from './../../assets/monster.js';
 
 class GameData extends User {
   constructor(userInstance) {
