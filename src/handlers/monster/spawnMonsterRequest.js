@@ -7,12 +7,7 @@ const spawnMonsterRequest = (socket) => {
 
   const { user, opponent } = gameSession.getUsers(socket);
 
-  const { monsterId, monsterNumber } = user.addMonster();
-
-  const monster = {
-    monsterId,
-    monsterNumber,
-  };
+  const monster = user.addMonster();
 
   user.socket.write(
     createResponse(PACKET_TYPE.SPAWN_MONSTER_RESPONSE, user.getNextSequence(), monster),

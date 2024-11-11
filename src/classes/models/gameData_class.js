@@ -51,8 +51,6 @@ class GameData extends User {
       monsterId,
       monsterNumber,
       level: 1,
-      gold: monsterInfo[monsterNumber - 1].gold,
-      score: monsterInfo[monsterNumber - 1].score,
     });
     return { monsterId, monsterNumber };
   }
