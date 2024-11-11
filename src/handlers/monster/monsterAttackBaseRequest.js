@@ -12,7 +12,6 @@ const monsterAttackBaseRequest = (socket, payload) => {
 
     const baseHp = user.setBaseHit(damage);
     const isGameOver = baseHp <= 0;
-    user.removeMonster();
 
     const packetType = isGameOver
       ? PACKET_TYPE.GAME_OVER_NOTIFICATION
@@ -24,6 +23,8 @@ const monsterAttackBaseRequest = (socket, payload) => {
     user.socket.write(createResponse(packetType, user.getNextSequence(), userPayload));
 
     opponent.socket.write(createResponse(packetType, opponent.getNextSequence(), opponentPayload));
+
+    user.removeMonster();
   } catch (error) {
     handleErr(socket, 1, error);
   }

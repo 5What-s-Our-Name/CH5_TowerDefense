@@ -28,26 +28,24 @@ class Game {
     this.users.push(newUser);
 
     if (this.users.length === MAX_PLAYERS) {
-      await delay(2000);
-      // 만약 대기 도중 나갔을 때
       if (this.getUserCount() === MAX_PLAYERS) {
         this.startGame();
       }
     }
   }
+
   getUsers(socket) {
-    const user = this.getUser(socket);
-    const opponent = this.getOpponentUser(socket);
-    return { user, opponent };
+    return { user: this.getUser(socket), opponent: this.getOpponentUser(socket) };
   }
+
   getUser(socket) {
-    return this.users.find((user) => user.socket.name === socket.name);
+    return this.users.find((user) => user.socket === socket);
   }
   getOpponentUser(socket) {
-    return this.users.find((user) => user.socket.name !== socket.name);
+    return this.users.find((user) => user.socket !== socket);
   }
   removeUser(socket) {
-    this.users = this.users.filter((user) => user.socket.name !== socket.name);
+    this.users = this.users.filter((user) => user.socket !== socket);
   }
 
   async startGame() {
@@ -57,6 +55,7 @@ class Game {
       const payload = !index
         ? { initialGameState, playerData, opponentData }
         : { initialGameState, playerData: opponentData, opponentData: playerData };
+      !index ? (user.towerList = playerData.towers) : (user.towerList = opponentData.towers);
 
       const startPacket = createResponse(
         PACKET_TYPE.MATCH_START_NOTIFICATION,

@@ -6,6 +6,7 @@ import { snakeToCamel } from './../utils/formatter/snakeToCamel.js';
 import { getHandlers } from '../init/loadHandlers.js';
 import { handleErr } from '../utils/error/handlerErr.js';
 import CustomErr from '../utils/error/customErr.js';
+import { delay } from '../utils/util/delay.js';
 
 export const onData = (socket) => (data) => {
   // 기존 버퍼에 데이터 추가
@@ -39,7 +40,7 @@ export const onData = (socket) => (data) => {
     const handlers = getHandlers();
     const handler = handlers[payloadName];
     const decodedPayload = { ...GamePacket.decode(payload)[payloadName] };
-
+    delay(200);
     handler(socket, decodedPayload);
   } catch (err) {
     handleErr(socket, packetType, err);

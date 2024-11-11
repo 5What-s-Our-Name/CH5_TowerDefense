@@ -14,6 +14,8 @@ class GameData extends User {
     this.towerList = [];
     this.monsterList = [];
     this.hp = config.init.baseHp;
+    this.towerCount = 0;
+    this.monsterCount = 0;
   }
 
   minusGold() {
