@@ -26,7 +26,7 @@ class Game {
     const newUser = copyInstance(user);
     this.users.set(newUser.socket.name, newUser);
 
-    if (this.users.length === MAX_PLAYERS) {
+    if (this.users.size === MAX_PLAYERS) {
       if (this.getUserCount() === MAX_PLAYERS) {
         this.startGame();
       }
