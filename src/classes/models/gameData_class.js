@@ -46,7 +46,6 @@ class GameData extends User {
   addMonster() {
     const monsterId = uuid();
     const monsterNumber = Math.floor(Math.random() * 5) + 1;
-    monsterInfo[monsterNumber - 1];
     this.monsterList.push({
       monsterId,
       monsterNumber,

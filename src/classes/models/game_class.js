@@ -41,13 +41,13 @@ class Game {
     return { user, opponent };
   }
   getUser(socket) {
-    return this.users.find((user) => user.socket === socket);
+    return this.users.find((user) => user.socket.name === socket.name);
   }
   getOpponentUser(socket) {
-    return this.users.find((user) => user.socket !== socket);
+    return this.users.find((user) => user.socket.name !== socket.name);
   }
   removeUser(socket) {
-    this.users = this.users.filter((user) => user.socket !== socket);
+    this.users = this.users.filter((user) => user.socket.name !== socket.name);
   }
 
   async startGame() {

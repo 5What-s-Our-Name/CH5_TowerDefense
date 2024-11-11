@@ -42,14 +42,12 @@ export const getGameSession = () => {
 };
 
 export const getMyGameSession = (userId) => {
-  for (const gameSession of gameSessions) {
-    if (gameSession.getUser(userId)) return gameSession;
-  }
+  return gameSessions.find((gameSession) => gameSession.getUser(userId));
 };
 
 export const getGameBySocket = (socket) => {
   for (const game of gameSessions) {
-    if (game.users.some((user) => user.socket === socket)) {
+    if (game.users.some((user) => user.socket.name === socket.name)) {
       return game;
     }
   }

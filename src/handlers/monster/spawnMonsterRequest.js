@@ -20,6 +20,8 @@ const spawnMonsterRequest = (socket) => {
       monster,
     ),
   );
+
+  user.sync();
 };
 
 export default spawnMonsterRequest;
