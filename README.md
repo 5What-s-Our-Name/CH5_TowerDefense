@@ -14,9 +14,10 @@
 
 ### 주요 기능
 ------------
-- `핸들러 폴더 내 함수 자동 파싱 및 연동` : 패킷 타입을 바탕으로 패킷 이름을 추출하고, 그 이름과 동일한 함수를 Handlers 객체에서 찾아서 연동합니다.
+- [`패킷 파싱`](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/tech/packetParser.md) : 크기가 유동적인 패킷을 버퍼에서 원활하게 파싱하기 위하여 오프셋 개념을 이용 하였습니다.
+- [`핸들러 폴더 내 함수 자동 파싱 및 연동`](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/tech/loadHandlers.md) : 패킷 타입을 바탕으로 패킷 이름을 추출하고, 그 이름과 동일한 함수를 Handlers 객체에서 찾아서 연동합니다.
+- [`게임세션 자동 증설 및 자동 감소`](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/tech/game_session.md) : 유저 접속에 따라 게임 세션이 유동적으로 생성 및 감소합니다.
 - `회원가입 및 로그인`: 유저는 회원가입 후 로그인하여 게임에 참여할 수 있습니다.
-- `게임세션 자동 증설 및 자동 감소` : 유저 접속에 따라 게임 세션이 유동적으로 생성 및 감소합니다.
 - `매칭 시스템` : 다른 유저와 실시간으로 매칭 및 대전을 진행합니다.
 - `타워 배치 및 업그레이드`: 게임 내에서 타워를 구매할 수 있으며 랜덤한 위치에 배치되어 재미요소를 더했습니다.
 - `몬스터 생성 및 공격`: 몬스터는 총 5가지로 랜덤하게 스폰되며, BASE에 도달 시 정해진 데미지를 가격합니다.
@@ -25,8 +26,9 @@
 
 ### TROUBLE-SHOOTING
 --------------------
-- [Problem_1] [EC2 환경에서 loadHandlers() 작동 오류]()
-- [Problem_2] [클라이언트 값 조작 시 무한 타워 구매 현상]()
+- [Problem_1] [EC2 환경에서 loadHandlers() 작동 오류](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/troubleShooting/loadHandlers.md)
+- [Problem_2] [클라이언트 값 조작 시 무한 타워 구매 현상](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/troubleShooting/towerPurchase.md)
+- [Problem_3] [유령 / 좀비 슬라임 스폰 현상 ( Nagle 알고리즘 )](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/troubleShooting/onConnection.md)
 
 ### 기술 스택
 ----------------
@@ -46,7 +48,7 @@
 - `보안 강화`: 비밀번호 페퍼링 및 솔팅, JWT 인증, 입력 값 검증 등 다양한 보안 기법을 적용했습니다.
 
 ### 실행 간 참고사항
-1. 환경 변수 설정
+#### 1. 환경 변수 설정
 `.env` 파일을 생성하고 필요한 환경 변수를 설정합니다. (내용 하단 참고)
 ```
 ##########SERVER##########
@@ -64,7 +66,7 @@ SALT = 10 // SALT값
 SECRET_KEY = SECRETKEY
 ```
 
-2. 데이터베이스 설정
+#### 2. 데이터베이스 설정
 - DB 준비 후 마이그레이션 진행
 `src\mysql\migration` 폴더 내 `createSchemas.js` 실행 시 DB 마이그레이션 진행
 - 또는 package.json에 적힌 `migrate` 사용 `npm run migrate`
