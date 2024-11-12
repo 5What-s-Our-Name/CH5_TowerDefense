@@ -22,7 +22,6 @@
 - onConnection 이벤트 처리 함수 내 Nagle 알고리즘 비활성화 관련 코드 주석처리
 
 #### 참고자료
-
 [네이글 알고리즘에 대한 설명과 TCP_NODELAY](https://en.wikipedia.org/wiki/Nagle%27s_algorithm)
 [Nagle's algorithm and Delayed ACKs](https://www.extrahop.com/blog/tcp-nodelay-nagle-quickack-best-practices#8-how-can-i-resolve-the-issues-caused-by-nagles-algorithm-and-delayed-acks)
 [What is Nagle’s Algorithm?](https://www.ituonline.com/tech-definitions/what-is-nagles-algorithm/)
