@@ -43,24 +43,24 @@ npm run dev
 ```
 
 ### 폴더 구조
-`src` - 소스 코드 디렉토리
-`classes/models/` - 주요 클래스 정의
-`constants/` - 상수 정의
-`handlers/` - 패킷 핸들러 모음
-`init/` - 초기화 스크립트
-`mysql/` - 데이터베이스 연결 및 설정
-`sessions/` - 세션 관리
-`utils/` - 유틸리티 함수
-`protobuf/` - 프로토콜 버퍼 정의
+- `src` - 소스 코드 디렉토리
+- `classes/models/` - 주요 클래스 정의
+- `constants/` - 상수 정의
+- `handlers/` - 패킷 핸들러 모음
+- `init/` - 초기화 스크립트
+- `mysql/` - 데이터베이스 연결 및 설정
+- `sessions/` - 세션 관리
+- `utils/` - 유틸리티 함수
+- `protobuf/` - 프로토콜 버퍼 정의
 
 ### 주요 파일 설명
-`server.js` - 서버 시작점
-`initServer.js` - 서버 초기화 로직
-`handlers` - 클라이언트 요청 처리 핸들러
-`sessions` - 유저 및 게임 세션 관리
-`models` - 게임 데이터 및 유저 클래스 정의
+- `server.js` - 서버 시작점
+- `initServer.js` - 서버 초기화 로직
+- `handlers` - 클라이언트 요청 처리 핸들러
+- `sessions` - 유저 및 게임 세션 관리
+- `models` - 게임 데이터 및 유저 클래스 정의
 
 ### 패킷 및 프로토콜
-`프로토콜 버퍼`를 사용하여 클라이언트와 통신합니다.
-패킷 타입은 `header.js`에 정의되어 있습니다.
-프로토콜 정의는 `packet.proto`에 있습니다.
+- `프로토콜 버퍼`를 사용하여 클라이언트와 통신합니다.
+- 패킷 타입은 `header.js`에 정의되어 있습니다.
+- 프로토콜 정의는 `packet.proto`에 있습니다.
