@@ -1,29 +1,32 @@
-import { initialGameState } from '../../assets/init.js';
 import { uuid } from '../../utils/util/uuid.js';
 import User from './user_class.js';
 import { monsterInfo } from '../../assets/monster.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { PACKET_TYPE } from '../../constants/header.js';
+import { config } from '../../config/config.js';
 
 class GameData extends User {
   constructor(userInstance) {
     super(userInstance.socket, userInstance.userId);
 
     this.score = 0;
-    this.gold = initialGameState.initialGold;
+    this.gold = config.init.initialGold;
     this.towerList = [];
     this.monsterList = [];
-    this.hp = initialGameState.baseHp;
+    this.hp = config.init.baseHp;
   }
 
   minusGold() {
-    // TODO 검증 필요
-    this.gold -= initialGameState.towerCost;
+    this.gold -= config.init.towerCost;
   }
 
   getTowerList() {
     return this.towerList;
   }
+
+  // getTowerSearch(towerId) {
+  //   return this.towerList.find((tower) => tower.towerId === towerId);
+  // }
 
   getMonsterList() {
     return this.monsterList;
@@ -35,7 +38,7 @@ class GameData extends User {
 
   setBaseHit(damage) {
     this.hp -= damage;
-    return this.hp;
+    return Math.floor(this.hp);
   }
 
   addTower(x, y) {
@@ -44,7 +47,6 @@ class GameData extends User {
     this.towerList.push({ towerId, x, y });
     return towerId;
   }
-
   addMonster() {
     const monsterId = uuid();
     const monsterNumber = Math.floor(Math.random() * 5) + 1;
@@ -53,25 +55,23 @@ class GameData extends User {
       monsterId,
       monsterNumber,
       level: 1,
-      gold: monsterInfo[monsterNumber - 1].gold,
-      score: monsterInfo[monsterNumber - 1].score,
     });
     return { monsterId, monsterNumber };
   }
 
   removeMonster(monsterId = undefined) {
-    let monster;
-    if (monsterId === undefined) {
-      monster = this.monsterList.shift();
-    } else {
+    if (monsterId === undefined && this.monsterList.length > 0) {
+      this.monsterList.shift();
+    } else if (this.monsterList.length > 0) {
       const index = this.monsterList.findIndex((monster) => monster.monsterId === monsterId);
-      monster = this.monsterList.splice(index, 1)[0];
+      if (index !== -1) {
+        const monster = this.monsterList.splice(index, 1)[0];
+        if (monster) this.getMonsterSearchAndReward(monster); // 죽인 몬스터가 진짜 있을 경우
+      }
     }
-    this.getMonsterSearchAndReward(monster);
     this.sync();
   }
 
-  // 나와 상대한테 상태동기화를 위한
   sync() {
     this.socket.write(
       createResponse(PACKET_TYPE.STATE_SYNC_NOTIFICATION, this.getNextSequence(), {
@@ -87,11 +87,8 @@ class GameData extends User {
 
   getMonsterSearchAndReward = (monster) => {
     const reward = monsterInfo[monster.monsterNumber - 1];
-
     this.gold += reward.gold;
     this.score += reward.score;
-
-    return { getGold: this.gold, getScore: this.score };
   };
 }
 

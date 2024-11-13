@@ -34,9 +34,8 @@ export const loadHandlers = async () => {
   try {
     await Promise.all(
       handlersPath.map(async (file) => {
-        const pathSplit = file.split('\\');
-        const fileName = pathSplit[pathSplit.length - 1].split('.')[0];
-
+        const fileFullName = path.basename(file);
+        const fileName = fileFullName.split('.')[0];
         const module = await import(pathToFileURL(file).href);
 
         if (module.default) {

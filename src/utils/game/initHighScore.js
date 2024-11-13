@@ -1,9 +1,9 @@
-import { opponentData, playerData } from '../../assets/init.js';
+import { initData } from '../../assets/init.js';
 import { getHighScore } from './score.js';
 export const initHighScore = async (users) => {
   const scores = await Promise.all(users.map((user) => getHighScore(user.userId)));
 
-  const data = [playerData, opponentData];
+  const data = [initData(), initData()];
 
   scores.forEach((score, index) => {
     index === 0

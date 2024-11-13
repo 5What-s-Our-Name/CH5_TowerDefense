@@ -9,11 +9,8 @@ import { initHighScore } from '../../utils/game/initHighScore.js';
 class Game {
   constructor(gameId) {
     this.gameId = gameId;
-    // 방 고유 아이디
     this.users = [];
-    // 방을 만든 유저와 상대방을 저장할 배열
     this.state = true;
-    // 대기 중이면 true, 게임 중이면 false
   }
   getGameId() {
     return this.gameId;
@@ -50,13 +47,11 @@ class Game {
     return this.users.find((user) => user.socket !== socket);
   }
   removeUser(socket) {
-    console.log('유저 삭제');
     this.users = this.users.filter((user) => user.socket !== socket);
   }
 
   async startGame() {
     const { playerData, opponentData } = await initHighScore(this.users);
-    this.state = false;
 
     this.users.forEach((user, index) => {
       const payload = !index
