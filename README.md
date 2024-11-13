@@ -12,6 +12,13 @@
 ------------------------
 ![image](https://github.com/user-attachments/assets/4036be92-8e15-4962-8a53-2e117ff41fec)
 
+### 시연영상
+-----------------------
+
+https://github.com/user-attachments/assets/3b3e1679-2d40-41e4-b95e-1813558eeb3f
+
+
+
 ### 주요 기능
 ------------
 - [`패킷 파싱`](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/tech/packetParser.md) : 크기가 유동적인 패킷을 버퍼에서 원활하게 파싱하기 위하여 오프셋 개념을 이용 하였습니다.
