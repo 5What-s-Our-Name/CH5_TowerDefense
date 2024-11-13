@@ -12,3 +12,6 @@
   설치하는 방식이라 서버측에서 제어하지 못함.
 
 ![](https://velog.velcdn.com/images/r_louis/post/4654d967-dbba-424b-97b5-eef13716f6c3/image.png)
+
+#### 해결책
+- 클라이언트 측에서 구매처리 하는 것이 아닌, 구매 시 패킷전송으로 서버에서 재화처리 후 id를 부여

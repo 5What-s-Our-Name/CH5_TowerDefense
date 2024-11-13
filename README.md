@@ -12,11 +12,19 @@
 ------------------------
 ![image](https://github.com/user-attachments/assets/4036be92-8e15-4962-8a53-2e117ff41fec)
 
+### 시연영상
+-----------------------
+
+https://github.com/user-attachments/assets/3b3e1679-2d40-41e4-b95e-1813558eeb3f
+
+
+
 ### 주요 기능
 ------------
-- `핸들러 폴더 내 함수 자동 파싱 및 연동` : 패킷 타입을 바탕으로 패킷 이름을 추출하고, 그 이름과 동일한 함수를 Handlers 객체에서 찾아서 연동합니다.
+- [`패킷 파싱`](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/tech/packetParser.md) : 크기가 유동적인 패킷을 버퍼에서 원활하게 파싱하기 위하여 오프셋 개념을 이용 하였습니다.
+- [`핸들러 폴더 내 함수 자동 파싱 및 연동`](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/tech/loadHandlers.md) : 패킷 타입을 바탕으로 패킷 이름을 추출하고, 그 이름과 동일한 함수를 Handlers 객체에서 찾아서 연동합니다.
+- [`게임세션 자동 증설 및 자동 감소`](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/tech/game_session.md) : 유저 접속에 따라 게임 세션이 유동적으로 생성 및 감소합니다.
 - `회원가입 및 로그인`: 유저는 회원가입 후 로그인하여 게임에 참여할 수 있습니다.
-- `게임세션 자동 증설 및 자동 감소` : 유저 접속에 따라 게임 세션이 유동적으로 생성 및 감소합니다.
 - `매칭 시스템` : 다른 유저와 실시간으로 매칭 및 대전을 진행합니다.
 - `타워 배치 및 업그레이드`: 게임 내에서 타워를 구매할 수 있으며 랜덤한 위치에 배치되어 재미요소를 더했습니다.
 - `몬스터 생성 및 공격`: 몬스터는 총 5가지로 랜덤하게 스폰되며, BASE에 도달 시 정해진 데미지를 가격합니다.
@@ -25,28 +33,28 @@
 
 ### TROUBLE-SHOOTING
 --------------------
-- [Problem_1] [EC2 환경에서 loadHandlers() 작동 오류]()
-- [Problem_2] [클라이언트 값 조작 시 무한 타워 구매 현상]()
+- [Problem_1] [EC2 환경에서 loadHandlers() 작동 오류](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/troubleShooting/loadHandlers.md)
+- [Problem_2] [클라이언트 값 조작 시 무한 타워 구매 현상](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/troubleShooting/towerPurchase.md)
+- [Problem_3] [유령 / 좀비 슬라임 스폰 현상 ( Nagle 알고리즘 )](https://github.com/5What-s-Our-Name/TowerDefense/blob/dev/docs/troubleShooting/onConnection.md)
 
 ### 기술 스택
 ----------------
 - `Node.js`: 자바스크립트 기반의 런타임 환경으로, 서버 사이드 애플리케이션을 개발하는 데 사용되었습니다.
 - `TCP 소켓 통신`: net 모듈을 활용하여 TCP 소켓 서버를 구축하고, 클라이언트와의 실시간 통신을 구현했습니다.
 - `Protocol Buffer`: 효율적인 바이너리 통신을 위해 protobufjs 라이브러리를 사용했습니다.
+- `Buffer`: 네트워크 통신에서 이진 데이터를 효율적으로 처리하기 위해 Node.js의 Buffer 클래스를 활용했습니다.
 - `MySQL 데이터베이스`: mysql2/promise 모듈을 사용하여 MySQL Connection Pool을 구현했습니다.
 - `bcrypt`: 비밀번호 해싱을 통해 보안을 강화하기 위해 bcrypt 라이브러리를 사용했습니다.
 - `JWT (JSON Web Token)`: 사용자 인증과 세션 관리를 위해 jsonwebtoken을 사용하여 토큰 기반 인증을 구현했습니다.
 - `Joi`: 입력 값의 유효성 검사를 위해 joi 라이브러리를 사용했습니다.
 - `UUID`: 각 세션ID를 고유하게 식별하기 위해 uuid 모듈을 활용했습니다.
 - `SnowFlake`: monsterId, towerId의 고유번호를 위하여 SnowFlake를 활용하여 Int형 uuid 커스텀 함수를 만들어 사용하였습니다.
-- `Buffer`: 네트워크 통신에서 이진 데이터를 효율적으로 처리하기 위해 Node.js의 Buffer 클래스를 활용했습니다.
 - `Custom Error Handle`: 에러 처리를 일관성 있게 관리하기 위해 CustomErr 클래스를 정의하고 활용했습니다.
 - `환경 변수 관리`: dotenv 라이브러리를 통해 중요한 설정 값들을 환경 변수로 관리하고 보안을 강화했습니다.
-- `패킷 시퀀싱 및 재전송 요청`: 네트워크 신뢰성을 높이기 위해 패킷 시퀀스를 관리하고 누락된 패킷에 대한 재전송 요청 로직을 구현했습니다.
-- `보안 강화`: 비밀번호 페퍼링 및 솔팅, JWT 인증, 입력 값 검증 등 다양한 보안 기법을 적용했습니다.
+
 
 ### 실행 간 참고사항
-1. 환경 변수 설정
+#### 1. 환경 변수 설정
 `.env` 파일을 생성하고 필요한 환경 변수를 설정합니다. (내용 하단 참고)
 ```
 ##########SERVER##########
@@ -64,7 +72,7 @@ SALT = 10 // SALT값
 SECRET_KEY = SECRETKEY
 ```
 
-2. 데이터베이스 설정
+#### 2. 데이터베이스 설정
 - DB 준비 후 마이그레이션 진행
 `src\mysql\migration` 폴더 내 `createSchemas.js` 실행 시 DB 마이그레이션 진행
 - 또는 package.json에 적힌 `migrate` 사용 `npm run migrate`

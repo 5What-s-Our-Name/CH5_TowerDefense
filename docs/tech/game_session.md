@@ -3,6 +3,9 @@
 `game_session.js` 내 `getGameSession`,`exitGameSession` 함수와
 `create_game_sessiong.js` 내 `createGameSession`으로 유저 수에 따라 세션이 자동으로 증가하고 감소하는 메커니즘을 구현하였습니다.
 
+![image](https://github.com/user-attachments/assets/67bc99b3-3ce7-4c4a-9ba3-52c0076fe32d)
+
+
 ## 1.getGameSession
 
 ```javascript
